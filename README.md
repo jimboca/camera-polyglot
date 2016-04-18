@@ -9,6 +9,10 @@ This node server is intended to support any type of camera.  Currently the follo
 1.Foscam MJPEG
   This is any Foscam Camera whose model begins with F18.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
   This uses UDP broadcasts to discover and add the cameras.  The same way the Foscam 'IP Camera Tool' finds your cameras.  So there is no need to setup ip address and port for each one.  It uses the Camera ID as the ISY device address, and Camera Alias as the ISY name.
+  * All the params are documented in the pdf mentioned above, if you have questions about them, please read that document first.
+  * The IP Adresses is stored as an unsigned integer in the ISY, but the ISY displays it as a signed integer, so it shows up in the Admin Consol as 2147483647 since that is the max value if a signed integer.  You can just ignore this for now, hopefully someday the ISY will display this correctly, and maybe even as an IP Address.
+  * The 'IR LED' only has a set option, and does not display the status because it seems there is no way to get the status of this from the camera that I can find.  If you know how, please tell me!
+  * The 'Network LED Mode' is the led_mode from the camera which is defined as 'Mode 0', 'Mode 1', and 'Mode 2' which Mode 2 is Off.  If you know what Mode 0 and 1 should be labeled as, please let me know.
 
 # Requirements
 
