@@ -4,7 +4,7 @@
     "type": "python",
     "executable": "camera.py",
     "description": "Connect cameras to the ISY994.",
-    "notice": "\"Foscam\" is a trademark owned by someone. This Node Server is neither developed by nor endorsed by the Foscam.",
+    "notice": "Put a notice here",
     "credits": [
         {
             "title": "Libary: Library Name",
@@ -12,7 +12,7 @@
             "version": "0.0",
             "date": "May 18, 2015",
             "source": "https://github.com/",
-            "license": "no license"
+            "license": "MIT"
         }
     ]
 }
