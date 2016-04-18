@@ -1,5 +1,6 @@
 
-This node server is intended to support any type of camera.  Currently the following are supported:
+This node server is intended to support any type of camera.  See <A href="https://github.com/jimboca/camera-polyglot/blob/master/README.md">camera-polyglot README</a> for more information</p>
+
 <ul>
   <li>Foscam MJPEG<br>
     <p>This is any Foscam Camera whose model begins with F18.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.

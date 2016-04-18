@@ -4,6 +4,13 @@ This is the Camera Poly for the ISY Polyglot interface.
 (c) JimBoCA aka Jim Searle
 MIT license. 
 
+This node server is intended to support any type of camera.  Currently the following are supported:
+
+1.Foscam MJPEG
+  This is any Foscam Camera whose model begins with F18.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
+  This uses UDP broadcasts to discover and add the cameras.  The same way the Foscam 'IP Camera Tool' finds your cameras.  So there is no need to setup ip address and port for each one.  It uses the Camera ID as the ISY device address, and Camera Alias as the ISY name.
+
+
 # Requirements
 
 1. Currently you must be running at least the unstable-rc version of polyglot.  You must grab the uncompiled version as instructed here:  https://github.com/UniversalDevicesInc/Polyglot/wiki/Polyglot-README#to-run-the-python-module-non-compiled-version Then also switch to the unstable-rc branch before running polyglot with `git checkout unstable-rc` when in the checked out Polyglot directory.
@@ -14,7 +21,7 @@ MIT license.
 Install:
 
 1. Pull the camera-polyglot into Polyglot
-  * 'cd polyglot/config/node_servers`
+  * `cd polyglot/config/node_servers`
   * `git clone https://github.com/jimboca/camera-polyglot.git`
   * `cd camera-polyglot`
 2. From the polyglot web page: http://your.pi.ip:8080
@@ -33,19 +40,19 @@ Install:
   * The server should stay 'Running' now.
   * Click on the 'Download profile' icon.
   * Select and Copy the 'Base URL' from that page, which you will need for Pasting later.
-5. Add as NodeServer in ISY. By selecting the empty slot that matches 'Node Server ID' you used in Step 2.
+5. Add as NodeServer in ISY by selecting the empty slot that matches 'Node Server ID' you used in Step 2.
   * Set 'Profile Name' to whatever you want, but might as well be the same as the name used in Step 2.
   * Set the Polyglot 'User Id' and Password.  Default: admin & admin.
   * Paste the 'Base URL' you copied in Step 4.
   * Set Host Name or IP of your machine running Polyglot
   * Set Port to the Polyglot port, default=8080
 6. Click 'Upload Profile'
-  * Browse to where the 'camera_profile.zip' from Step 4 is located.
+  * Browse to where the 'camera_profile.zip' from Step 4 is located and select it.
 7. Reboot ISY
 8. Upload Profile again in the node server (quirk of ISY)
 9. Reboot ISY again (quirk of ISY)
-10. Once ISY is back up, go to Polyglot and restart the Nest nodeserver.
-11. You should now have a 'Camera Server' node.
+10. Once ISY is back up, go to Polyglot and restart the Camera node server.
+11. You should now have a 'Camera Server' node in the ISY.
   * Select the node
   * Set 'Foscam MJPEG Search' to '10s Query'
   * Set 'Debug' to 'Debug'
