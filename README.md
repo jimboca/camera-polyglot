@@ -10,7 +10,6 @@ This node server is intended to support any type of camera.  Currently the follo
   This is any Foscam Camera whose model begins with F18.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
   This uses UDP broadcasts to discover and add the cameras.  The same way the Foscam 'IP Camera Tool' finds your cameras.  So there is no need to setup ip address and port for each one.  It uses the Camera ID as the ISY device address, and Camera Alias as the ISY name.
 
-
 # Requirements
 
 1. Currently you must be running at least the unstable-rc version of polyglot.  You must grab the uncompiled version as instructed here:  https://github.com/UniversalDevicesInc/Polyglot/wiki/Polyglot-README#to-run-the-python-module-non-compiled-version Then also switch to the unstable-rc branch before running polyglot with `git checkout unstable-rc` when in the checked out Polyglot directory.

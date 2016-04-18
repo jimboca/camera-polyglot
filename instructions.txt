@@ -1,12 +1,6 @@
 
 This node server is intended to support any type of camera.  See <A href="https://github.com/jimboca/camera-polyglot/blob/master/README.md">camera-polyglot README</a> for more information</p>
 
-<ul>
-  <li>Foscam MJPEG<br>
-    <p>This is any Foscam Camera whose model begins with F18.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
-    <p>This uses UDP broadcasts to discover and add the cameras.  The same way the Foscam 'IP Camera Tool' finds your cameras.  So there is no need to setup ip address and port for each one.  It uses the Camera ID as the ISy device address, and Camera Alias as the ISY name.
-</ul>
-
 <b>Creating the node server.</b>
 
 <ol>
