@@ -5,7 +5,7 @@
 #  - And var alarm_http=1;
 #  - Can't use ping for "responding" since it needs root?  So now it is always the same as "connected"
 
-VERSION = 0.1
+VERSION = 0.2
 
 import os
 from polyglot.nodeserver_api import Node

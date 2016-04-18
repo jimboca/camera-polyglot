@@ -21,7 +21,7 @@ from camera_nodes import *
 from camera_funcs import myint,long2ip
 
 # CameraServer version number
-CAMERA_SERVER_VERSION = 0.1
+CAMERA_SERVER_VERSION = 0.2
 
 class CameraServer(Node):
     """ Node that contains the Main Camera Server settings """
