@@ -1,0 +1,6 @@
+
+https://github.com/mcfadden/homebridge-foscam-ipcamera-accessory
+If your model number starts with FI9 set hd_api to true. If your model number starts with FI8 set hd_api to false
+
+
+http://foscam.us/forum/foscam-network-discovery-protocol-docs-t8789.html

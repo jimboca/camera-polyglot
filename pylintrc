@@ -1,0 +1,11 @@
+[MASTER]
+ignore=CVS
+reports=no
+disable=
+    locally-disabled,superfluous-parens,too-many-arguments,file-ignored
+# REASONS
+#  locally-disabled - Too noisy. Things were disabled locally for a reason.
+#  superfluous-parens - Usually used to ensure Python 2 and 3 compatibility.
+#  too-many-arguments - Numerous functions use many arguments to maintain
+#                       similarities with ISY API.
+#  file-ignore - Too noisy. File was ignored for a reason.

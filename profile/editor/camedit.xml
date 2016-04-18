@@ -1,0 +1,58 @@
+<editors>
+
+   <editor id="I_INTEGER">
+       <range uom="25" min="0" max="1000" prec="0" />
+   </editor>
+
+   <editor id="I_INTEGER_L">
+       <range uom="56" min="0" max="4294967295" prec="0" />
+   </editor>
+
+   <editor id="BOOL">
+       <range uom="2" subset="0,1"/>
+   </editor>
+
+   <editor id="FLOAT">
+       <range uom="56" />
+   </editor>
+
+   <editor id="I_ONOFF">
+       <range uom="25" subset="0,1" nls="CONOFF" />
+   </editor>
+
+    <!-- 16 Position Selector -->
+    <editor id="I_POS16">
+        <range uom="25" subset="1-16" nls="POS" />
+    </editor>
+
+    <!-- 0-2 Mode (M12O=Mode 0, 1, Off) cause I don't know what 0 and 1 are -->
+    <editor id="I_M01O">
+        <range uom="25" subset="0-2" nls="M01O" />
+    </editor>
+
+    <!-- 0-2 Mode (MOOA=Mode Off On Auto-->
+    <editor id="I_NLEDM">
+        <range uom="25" subset="0-2" nls="NLEDM" />
+    </editor>
+
+    <!-- 0-2 IR Mode (MOO=Mode Off On-->
+    <editor id="I_MOO">
+        <range uom="25" subset="0-1" nls="MOO" />
+    </editor>
+
+    <!-- 0-9 Motion Sensitivity -->
+    <editor id="I_ALMOS">
+        <range uom="25" subset="0-9" nls="ALMOS" />
+    </editor>
+
+    <!-- 0-4 Foscam polling mode -->
+    <editor id="I_FOSCAM_MJPEG">
+        <range uom="25" subset="0-4" nls="CFMJPEG" />
+    </editor>
+
+    <!-- 0-4 Log Debug Mode -->
+    <editor id="I_DM">
+        <range uom="25" subset="0,10,20,30,40,50" nls="CDM" />
+    </editor>
+
+</editors>

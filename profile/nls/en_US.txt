@@ -1,0 +1,114 @@
+
+# Camera Server
+ND-CameraServer-NAME = Camera Server
+ND-CameraServer-ICON = Input
+ST-CAMS-GV1-NAME = Version
+ST-CAMS-GV2-NAME = Cameras
+ST-CAMS-GV3-NAME = Foscam MJPEG Search
+ST-CAMS-GV4-NAME = Debug Mode
+
+CMD-SET_FOSCAM_MJPEG-NAME = Foscam MJPEG Search
+CFMJPEG-0 = Off
+CFMJPEG-1 = 10s Query
+CFMJPEG-2 = 20s Query
+CFMJPEG-3 = 30s Query
+CFMJPEG-4 = 60s Query
+
+CMD-SET_DM-NAME = Debug
+CDM-0 = All
+CDM-10 = Debug
+CDM-20 = Info
+CDM-30 = Warning
+CDM-40 = Error
+CDM-50 = Critical
+
+CMD-DISCOVER-NAME = Discover
+
+# Camera Names
+ND-GCAM-NAME = Generic IP Camera
+ND-FoscamMJPEG-NAME = Foscam MJPEG Camera
+ND-FoscamMJPEG-ICON = Input
+ND-FCAM1-ICON = Input
+
+# Camera Controls
+ST-CAM-GV1-NAME = Version
+ST-CAM-GV2-NAME = IP Address
+ST-CAM-GV3-NAME = Port
+ST-CAM-GV4-NAME = Responding
+ST-CAM-GV5-NAME = Network LED Mode
+ST-CAM-GV6-NAME = Alarm Motion Armed
+ST-CAM-GV7-NAME = Alarm Send Mail
+ST-CAM-GV8-NAME = Motion Sensitivity
+ST-CAM-GV9-NAME = Motion Compensation
+
+CMD-ST-NAME = Query
+CMD-CAM-REBOOT-NAME = Reboot
+CMD-CAM-SET_LEDM-NAME = Set Network LED Mode
+CMD-CAM-SET_IRLED-NAME = Set IR LED
+CMD-CAM-SET_ALMOA-NAME = Set Alarm Motion Armed
+CMD-CAM-SET_ALML-NAME = Set Alarm Send Mail
+CMD-CAM-SET_ALMOS-NAME = Set Alarm Motion Sensitivity
+CMD-CAM-SET_ALMOC-NAME = Set Alarm Motion Compensation
+CMD-CAM-SET_POS-NAME = Set Position
+
+#CMDP-CAM-BOOL-GV6-NAME = Armed
+#CMDP-CAM-BOOL-GV7-NAME = Send Email
+#CMDP-CAM-I_POS16-POS-NAME = Preset
+#CMDP-CAM-I_MOO-GV10-NAME = Value
+#CMDP-CAM-I_M01O-GV5-NAME = Mode
+#CMDP-CAM-I_ALMOS-GV8-NAME = Sensitivity
+#CMDP-CAM-BOOL-GV9-NAME = Compensation
+#CMDP-CAM-
+
+POS-1 = Preset 1
+POS-2 = Preset 2
+POS-3 = Preset 3
+POS-4 = Preset 4
+POS-5 = Preset 5
+POS-6 = Preset 6
+POS-7 = Preset 7
+POS-8 = Preset 8
+POS-9 = Preset 9
+POS-10 = Preset 10
+POS-11 = Preset 11
+POS-12 = Preset 12
+POS-13 = Preset 13
+POS-14 = Preset 14
+POS-15 = Preset 15
+POS-16 = Preset 16
+
+ALMOS-0 = Sensitivity 0 (Highest)
+ALMOS-1 = Sensitivity 1
+ALMOS-2 = Sensitivity 2
+ALMOS-3 = Sensitivity 3
+ALMOS-4 = Sensitivity 4
+ALMOS-5 = Sensitivity 5
+ALMOS-6 = Sensitivity 6
+ALMOS-7 = Sensitivity 7
+ALMOS-8 = Sensitivity 8
+ALMOS-9 = Sensitivity 9 (Lowest)
+
+MOO-0 = Off
+MOO-1 = On
+
+# Mode Off, On, Auto (not currently used)
+MOOA-0 = Off
+MOOA-1 = On
+MOOA-2 = Auto
+
+# led_mode for the network led on the back of the camera.
+# It is 0 (zero) 1 (one) O (Letter O=Off)
+# Cause I don't know what zero and one indicate.
+NLEDM-0 = Mode 0
+NLEDM-1 = Mode 1
+NLEDM-2 = Off
+
+# Camera sub nodes.
+ND-CamMotion-NAME = Camera Motion Sensor
+ND-CamMotion-ICON = Input
+
+ST-CAMNM-NAME = Motion
+CMD-CAMNM-ST-NAME = Motion
+
+CONOFF-0 = Off
+CONOFF-1 = On

@@ -1,0 +1,113 @@
+<nodeDefs>
+
+  <!-- === Camera Server Holds all Camera Nodes ========================================  -->
+
+  <nodeDef id="CameraServer" nodeType="139" nls="CAMS">
+    <sts>
+      <st id="GV1" editor="FLOAT" />
+      <st id="GV2" editor="I_INTEGER" />
+      <st id="GV3" editor="I_FOSCAM_MJPEG" />
+      <st id="GV4" editor="I_DM" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<cmd id="QUERY" />
+	<cmd id="DISCOVER" />
+	<!--  Foscam MJPEG Polling -->
+        <cmd id="SET_FOSCAM_MJPEG">
+          <p id="" editor="I_FOSCAM_MJPEG" init="GV3" />
+        </cmd>
+	<!--  Log Debug Mode -->
+        <cmd id="SET_DM">
+          <p id="" editor="I_DM" init="GV4"/>
+        </cmd>
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <!-- === Foscam MJPEG Camera ============================================================  -->
+
+  <nodeDef id="FoscamMJPEG" nodeType="139" nls="CAM">
+    <sts>
+      <st id="GV1" editor="FLOAT" />
+      <st id="GV2" editor="I_INTEGER" />
+      <st id="GV3" editor="I_INTEGER" />
+      <st id="GV4" editor="BOOL" />
+      <st id="GV5" editor="I_NLEDM" />
+      <st id="GV6" editor="BOOL" />
+      <st id="GV7" editor="BOOL" />
+      <st id="GV9" editor="BOOL" />
+      <st id="GV8" editor="I_ALMOS" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<!--  The IR LED -->
+        <cmd id="SET_IRLED">
+          <p id="" editor="I_MOO" init="GV10" />
+        </cmd>
+	<!--  The Network LED flasshing -->
+        <cmd id="SET_LEDM">
+          <p id="" editor="I_NLEDM" init="GV5" />
+        </cmd>
+	<!--  Enable motion alarm -->
+        <cmd id="SET_ALMOA">
+          <p id="" editor="BOOL" init="GV6" />
+        </cmd>
+	<!--  Send email for motion alarm -->
+        <cmd id="SET_ALML">
+          <p id="" editor="BOOL" init="GV7" />
+        </cmd>
+	<!-- Enable alarm motion compensation or not when the light changes suddently，0：no，1：yes  -->
+        <cmd id="SET_ALMOC">
+          <p id="" editor="BOOL" init="GV9" />
+        </cmd>
+	<!-- Motion Sensitivity: 0-9：high-low (but I think it is low-high) -->
+        <cmd id="SET_ALMOS">
+          <p id="" editor="I_ALMOS" init="GV8" />
+        </cmd>
+	<!-- Set camera position to one of 16 presets -->
+        <cmd id="SET_POS">
+          <p id="" editor="I_POS16" />
+        </cmd>
+	<cmd id="REBOOT" />
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <!-- === Camera Motion Node ============================================================  -->
+  <nodeDef id="CamMotion" nodeType="139" nls="CAMNM">
+    <sts>
+      <st id="ST" editor="I_ONOFF" />
+    </sts>
+    <cmds>
+      <sends>
+        <cmd id="DON" />
+        <cmd id="DOF" />
+      </sends>
+      <accepts>
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <!-- === Some other Camera ============================================================  -->
+  <nodeDef id="FCAM2" nodeType="139" nls="CAM">
+    <sts>
+      <st id="GV1" editor="I_INTEGER" />
+      <st id="GV2" editor="I_INTEGER" />
+      <st id="GV3" editor="I_INTEGER" />
+      <st id="GV4" editor="I_INTEGER" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+
+</nodeDefs>
