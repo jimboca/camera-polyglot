@@ -25,20 +25,20 @@ This node server is intended to support any type of camera.  Currently the follo
     <li>Click OK.
     <li>If this is the first time the profile was loaded, or the profile has changed, you must reboot the ISY with the ISY Configuration -> Reboot option.
   </ol>
-  <li>(Not yet implemented) Currently config information for some cameras is in a seperate file.  While waiting for the ISY to reboot review the config file and change the settings.
+  <li>Currently config information for some cameras is in a seperate file.  While waiting for the ISY to reboot review the config file and change the settings.
   <li>Once the ISY reboots, click the 'Resart Server' button near the top of this page.
   <li>You should then see a 'Camera Server' node on the ISY.  This node manages communication with the main polyglot camera node server.
   <li>Select the 'Camera Server' node, and set the options appropriate for your network.
   <ol>
     <li>Foscam MPEG Search.  Set to off to not poll for these cameras, or select the desired time.  I am assuming a longer time may be necessary when you have a lot of cameras, but 10 seconds works fine for my 3 cameras.
   </ol>
-  <li>Click the 'Query' button, this will re-read the config and poll for cameras if necessary and add them all.
+  <li>Click the 'Discover' button, this will re-read the config and poll for cameras if necessary and add them all.
 </ol>
 
 <b>Debugging</b>
 <p>You should now see your cameras. If not:
 <ul>
   <li>Check the polyglot log by clicking the 'View Log' button on the left of this page.
-  <li>Check the node server log file which is stored your polyglot config directory under camera/name.log where name is what you called it.
+  <li>Check the node server log file which is stored your polyglot config directory under camera-polyglot/name.log where name is what you called it.
 </ul>
 
