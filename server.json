@@ -1,5 +1,5 @@
 {
-    "name": "ISYHelper Camera",
+    "name": "IP Camera",
     "docs": "https://www.google.com",
     "type": "python",
     "executable": "camera.py",
