@@ -8,7 +8,6 @@
 # and automatically add them.
 #
 # TODO:
-#  - Initialize cameras on started, Need a query for existing cameras, and discover for new cameras?
 #  - Pass logger to foscam_poll
 #  - Use GV3 to pass timeout to foscam_poll
 #
@@ -21,7 +20,7 @@ from camera_nodes import *
 from camera_funcs import myint,long2ip
 
 # CameraServer version number
-CAMERA_SERVER_VERSION = 0.2
+CAMERA_SERVER_VERSION = 0.3
 
 class CameraServer(Node):
     """ Node that contains the Main Camera Server settings """
@@ -34,7 +33,7 @@ class CameraServer(Node):
         self.parent.logger.info("CameraServer:init: address=%s, name='%s'" % (self.address, self.name))
         # Number of Cameras we are managing
         self.num_cams   = 0
-        self.debug_mode = 2
+        self.debug_mode = 10
         self.foscam_mjpeg = 1
         super(CameraServer, self).__init__(parent, self.address, self.name, True, manifest)
         self._add_manifest_cams(manifest)
@@ -75,17 +74,20 @@ class CameraServer(Node):
         return True
 
     def _discover_foscam_m(self,manifest):
-        self.parent.logger.info("CameraServer: Polling for Foscam MJPEG cameras %s" % (self.foscam_mjpeg))
+        self.parent.logger.info("CameraServer:discover_foscam_m: Polling for Foscam MJPEG cameras %s" % (self.foscam_mjpeg))
         cams = foscam_poll(self.parent.logger)
         self.parent.logger.info("CameraServer: Got cameras: " + str(cams))
         for cam in cams:
             cam['id'] = cam['id'].lower()
-            self.parent.logger.info("CameraServer: Adding camera: %s:%s" % (cam['ip'], cam['port']))
+            self.parent.logger.info("CameraServer:discover_foscam_m: Checking to add camera: %s:%s" % (cam['ip'], cam['port']))
             lnode = self.parent.get_node(cam['id'])
             if not lnode:
-                FoscamMJPEG(self.parent, True, cam['ip'], cam['port'], "polyglot", "poly*glot", self.manifest, cam['name'], cam['id'])
+                self.parent.logger.info("CameraServer:discover_foscam_m: Adding camera: %s:%s" % (cam['ip'], cam['port']))
+                FoscamMJPEG(self.parent, True, cam['ip'], cam['port'], self.parent.cam_config['user'], self.parent.cam_config['password'], self.manifest, cam['name'], cam['id'])
                 self.num_cams += 1
                 self.set_driver('GV2', self.num_cams, uom=56, report=True)
+                self.parent.logger.info("CameraServer:discover_foscam_m: Done Adding camera: %s:%s" % (cam['ip'], cam['port']))
+        self.parent.logger.info("CameraServer:discover_foscam_m: Done")
         
     def poll(self):
         """ Poll TODO: Ping the camera?  """
@@ -94,10 +96,10 @@ class CameraServer(Node):
     def _set_foscam_mjpeg(self, **kwargs):
         """ Enable/Disable Foscam MJPEG UDP Searching
               0 = Off
-              0 = 10 second query
-              0 = 20 second query
-              0 = 30 second query
-              0 = 60 second query
+              1 = 10 second query
+              2 = 20 second query
+              3 = 30 second query
+              4 = 60 second query
         """
         self.foscam_mjpeg = kwargs.get("value")
         self.parent.logger.info("CameraServer: Foscam Polling set to %s" % (self.foscam_mjpeg))
