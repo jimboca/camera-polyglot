@@ -20,7 +20,7 @@ from camera_nodes import *
 from camera_funcs import myint,long2ip
 
 # CameraServer version number
-CAMERA_SERVER_VERSION = 0.3
+CAMERA_SERVER_VERSION = 0.4
 
 class CameraServer(Node):
     """ Node that contains the Main Camera Server settings """
@@ -35,6 +35,13 @@ class CameraServer(Node):
         self.num_cams   = 0
         self.debug_mode = 10
         self.foscam_mjpeg = 1
+        self.foscam_auth_mode = 0
+        if address in manifest:
+            drivers = manifest[address]['drivers']
+            if 'GV4' in drivers:
+                self.debug_mode = drivers['GV4']
+            if 'GV3' in drivers:
+                self.foscam_mjpeg = drivers['GV3']
         super(CameraServer, self).__init__(parent, self.address, self.name, True, manifest)
         self._add_manifest_cams(manifest)
         self.query();
