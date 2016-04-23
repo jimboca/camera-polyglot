@@ -30,22 +30,28 @@
 
   <nodeDef id="FoscamMJPEG" nodeType="139" nls="CAM">
     <sts>
-      <st id="GV1" editor="FLOAT" />
-      <st id="GV2" editor="I_INTEGER" />
-      <st id="GV3" editor="I_INTEGER" />
-      <st id="GV4" editor="BOOL" />
-      <st id="GV5" editor="I_NLEDM" />
-      <st id="GV6" editor="BOOL" />
-      <st id="GV7" editor="BOOL" />
-      <st id="GV9" editor="BOOL" />
-      <st id="GV8" editor="I_ALMOS" />
+      <st id="GV1"  editor="FLOAT" />
+      <st id="GV11" editor="FLOAT" />
+      <st id="GV10" editor="I_AUTHM" />
+      <!-- <st id="GV2"  editor="I_INTEGER" /> -->
+      <!-- <st id="GV3"  editor="I_INTEGER" /> -->
+      <st id="GV4"  editor="BOOL" />
+      <st id="GV5"  editor="I_NLEDM" />
+      <st id="GV6"  editor="BOOL" />
+      <st id="GV7"  editor="BOOL" />
+      <st id="GV9"  editor="BOOL" />
+      <st id="GV8"  editor="I_ALMOS" />
     </sts>
     <cmds>
       <sends />
       <accepts>
+	<!--  Authoirzation Mode -->
+        <cmd id="SET_AUTHM">
+          <p id="" editor="I_AUTHM" init="GV10" />
+        </cmd>
 	<!--  The IR LED -->
         <cmd id="SET_IRLED">
-          <p id="" editor="I_MOO" init="GV10" />
+          <p id="" editor="I_MOO" />
         </cmd>
 	<!--  The Network LED flasshing -->
         <cmd id="SET_LEDM">
@@ -80,7 +86,7 @@
   <!-- === Camera Motion Node ============================================================  -->
   <nodeDef id="CamMotion" nodeType="139" nls="CAMNM">
     <sts>
-      <st id="ST" editor="I_ONOFF" />
+      <st id="ST" editor="I_OOU" />
     </sts>
     <cmds>
       <sends>

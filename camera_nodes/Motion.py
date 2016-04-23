@@ -12,28 +12,37 @@ class Motion(Node):
         full_name    = primary.name    + "-Motion"
         full_address = primary.address + "m";
         super(Motion, self).__init__(parent, full_address, full_name, primary, manifest)
+        self.motion_st  = 0
+        self.query()
 
     def query(self, **kwargs):
-        """ query the camera """
+        """ query the motion status camera """
         # pylint: disable=unused-argument
         self.parent.logger.debug("Motion:query:%s" % (self.name))
-        self.primary._get_status()
-        # TODO: Should report only be true if it changes?
-        self.set_driver('ST', self.primary.status['alarm_status'], report=True)
-        self.parent.logger.debug("Motion:query:%s: ST=%s" % (self.name,self.primary.status['alarm_status']))
+        cm = self.primary.get_motion_status()
+        if cm != self.motion_st:
+            self.motion_st = cm
+            self.set_driver('ST', self.motion_st, uom=25, report=True)
+        self.parent.logger.debug("Motion:query:%s: ST=%s" % (self.name,self.motion_st))
+        if cm == 3:
+            return False
         return True
 
     def motion(self, value):
-        """ query the camera """
-        self.parent.logger.debug("Motion:motion:%s: Setting alarm_status=%s" % (self.name,value))
-        self.primary.status['alarm_status'] = value
-        return self.set_driver('ST', value, report=True)
+        """ motion detected on the camera, set the status so we start poling """
+        self.motion_st = int(value)
+        self.parent.logger.debug("Motion:motion:%s: Motion==%s" % (self.name,self.motion_st))
+        self.primary.set_motion_status(self.motion_st)
+        return self.set_driver('ST', self.motion_st, uom=25, report=True)
 
     def poll(self):
-        """ Poll Motion  """
-        # TODO: This should get the driver status
-        if int(self.primary.status['alarm_status']) > 0:
-            self.parent.logger.info("Motion:poll:%s: Check alarm_status" % (self.name))
+        """ 
+        poll called by polyglot 
+        - If motion is on then query the camera to see if it's still on
+        """
+        #self.parent.logger.debug("Motion:poll:%s: Motion=%d" % (self.name,self.motion_st))
+        if self.motion_st == 1:
+            self.parent.logger.info("Motion:poll:%s: Check Motion" % (self.name))
             return self.query()
         return True
 

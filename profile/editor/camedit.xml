@@ -16,8 +16,8 @@
        <range uom="56" />
    </editor>
 
-   <editor id="I_ONOFF">
-       <range uom="25" subset="0,1" nls="CONOFF" />
+   <editor id="I_OOU">
+       <range uom="25" subset="0,1,2" nls="SOOU" />
    </editor>
 
     <!-- 16 Position Selector -->
@@ -30,7 +30,7 @@
         <range uom="25" subset="0-2" nls="M01O" />
     </editor>
 
-    <!-- 0-2 Mode (MOOA=Mode Off On Auto-->
+    <!-- 0-2 Network LED Mode -->
     <editor id="I_NLEDM">
         <range uom="25" subset="0-2" nls="NLEDM" />
     </editor>
@@ -53,6 +53,11 @@
     <!-- 0-4 Log Debug Mode -->
     <editor id="I_DM">
         <range uom="25" subset="0,10,20,30,40,50" nls="CDM" />
+    </editor>
+
+    <!-- 0-1 Authorization Mode -->
+    <editor id="I_AUTHM">
+        <range uom="25" subset="0,1" nls="AUTHM" />
     </editor>
 
 </editors>

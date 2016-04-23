@@ -31,7 +31,7 @@ ND-FoscamMJPEG-ICON = Input
 ND-FCAM1-ICON = Input
 
 # Camera Controls
-ST-CAM-GV1-NAME = Version
+ST-CAM-GV1-NAME = Node Version
 ST-CAM-GV2-NAME = IP Address
 ST-CAM-GV3-NAME = Port
 ST-CAM-GV4-NAME = Responding
@@ -40,6 +40,8 @@ ST-CAM-GV6-NAME = Alarm Motion Armed
 ST-CAM-GV7-NAME = Alarm Send Mail
 ST-CAM-GV8-NAME = Motion Sensitivity
 ST-CAM-GV9-NAME = Motion Compensation
+ST-CAM-GV10-NAME = Authorization Mode
+ST-CAM-GV11-NAME = System Version
 
 CMD-ST-NAME = Query
 CMD-CAM-REBOOT-NAME = Reboot
@@ -50,6 +52,7 @@ CMD-CAM-SET_ALML-NAME = Set Alarm Send Mail
 CMD-CAM-SET_ALMOS-NAME = Set Alarm Motion Sensitivity
 CMD-CAM-SET_ALMOC-NAME = Set Alarm Motion Compensation
 CMD-CAM-SET_POS-NAME = Set Position
+CMD-CAM-SET_AUTHM-NAME = Set Authorization Mode
 
 #CMDP-CAM-BOOL-GV6-NAME = Armed
 #CMDP-CAM-BOOL-GV7-NAME = Send Email
@@ -88,8 +91,10 @@ ALMOS-7 = Sensitivity 7
 ALMOS-8 = Sensitivity 8
 ALMOS-9 = Sensitivity 9 (Lowest)
 
-MOO-0 = Off
-MOO-1 = On
+# Status: Off, On, Unknown
+SOOU-0 = Off
+SOOU-1 = On
+SOOU-2 = Unknown
 
 # Mode Off, On, Auto (not currently used)
 MOOA-0 = Off
@@ -98,10 +103,16 @@ MOOA-2 = Auto
 
 # led_mode for the network led on the back of the camera.
 # It is 0 (zero) 1 (one) O (Letter O=Off)
-# Cause I don't know what zero and one indicate.
-NLEDM-0 = Mode 0
-NLEDM-1 = Mode 1
+#  http://ip/set_misc.cgi?led_mode=0 : Led indicates network connection
+#  http://ip/set_misc.cgi?led_mode=1 : Led indicates connected network type 
+#  http://ip/set_misc.cgi?led_mode=2 : Led deactivated except during camera boot
+NLEDM-0 = Network Connection
+NLEDM-1 = Network Type
 NLEDM-2 = Off
+
+# Authorization Mode
+AUTHM-0 = Basic
+AUTHM-1 = Digest
 
 # Camera sub nodes.
 ND-CamMotion-NAME = Camera Motion Sensor
@@ -109,6 +120,3 @@ ND-CamMotion-ICON = Input
 
 ST-CAMNM-NAME = Motion
 CMD-CAMNM-ST-NAME = Motion
-
-CONOFF-0 = Off
-CONOFF-1 = On

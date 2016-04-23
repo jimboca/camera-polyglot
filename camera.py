@@ -5,6 +5,10 @@
 # Issues:
 #  - Once the node is registered, it's name will not change.
 #
+# Auth Issues:
+#  - Needs basic auth:  11.37.2.52
+#  - Uses digest auth:  11.37.2.59
+#
 """ Camera Node Server for ISY """
 
 try:
@@ -110,10 +114,17 @@ class CameraNodeServer(SimpleNodeServer):
             self.send_error("No node for motion on address %s" % (address));
         return False
     
-    def http_get(self,ip,port,user,password,path,payload):
+    def http_get(self,ip,port,user,password,path,payload,auth_mode=0):
         url = "http://{}:{}/{}".format(ip,port,path)
-        self.logger.debug("http_get: Sending: %s %s" % (url, payload) )
-        auth = HTTPDigestAuth(user,password)
+        self.logger.debug("http_get: Sending: %s %s auth_mode=%d" % (url, payload, auth_mode) )
+        if auth_mode == 0:
+            auth = HTTPBasicAuth(user,password)
+        elif auth_mode == 1:
+            auth = HTTPDigestAuth(user,password)
+        else:
+            self.send_error("Unknown auth_mode '%s' for request '%s'.  Must be 0 for 'digest' or 1 for 'basic'." % (auth_mode, url) )
+            return False
+            
         try:
             response = requests.get(
                 url,

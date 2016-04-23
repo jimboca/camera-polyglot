@@ -35,7 +35,6 @@ class CameraServer(Node):
         self.num_cams   = 0
         self.debug_mode = 10
         self.foscam_mjpeg = 1
-        self.foscam_auth_mode = 0
         if address in manifest:
             drivers = manifest[address]['drivers']
             if 'GV4' in drivers:
@@ -52,9 +51,11 @@ class CameraServer(Node):
         for address in manifest:
             data = manifest[address]
             self.parent.logger.debug("CameraServer:add_manifest_cams: address=%s data=%s" % (address,data))
-            drivers = data['drivers']
             if data['node_def_id'] == 'FoscamMJPEG':
-                FoscamMJPEG(self.parent, True, long2ip(drivers['GV2']), drivers['GV3'], self.parent.cam_config['user'], self.parent.cam_config['password'], manifest, data['name'], address)
+                # TODO: Don't pass drives, let FoscamMJPEG figure it out.
+                FoscamMJPEG(self.parent, True,
+                            self.parent.cam_config['user'], self.parent.cam_config['password'],
+                            manifest=data, address=address)
                 self.num_cams += 1
         
     def query(self, **kwargs):
@@ -86,15 +87,16 @@ class CameraServer(Node):
         self.parent.logger.info("CameraServer: Got cameras: " + str(cams))
         for cam in cams:
             cam['id'] = cam['id'].lower()
-            self.parent.logger.info("CameraServer:discover_foscam_m: Checking to add camera: %s:%s" % (cam['ip'], cam['port']))
+            self.parent.logger.info("CameraServer:discover_foscam_m: Checking to add camera: %s %s" % (cam['id'], cam['name']))
             lnode = self.parent.get_node(cam['id'])
             if not lnode:
-                self.parent.logger.info("CameraServer:discover_foscam_m: Adding camera: %s:%s" % (cam['ip'], cam['port']))
-                FoscamMJPEG(self.parent, True, cam['ip'], cam['port'], self.parent.cam_config['user'], self.parent.cam_config['password'], self.manifest, cam['name'], cam['id'])
+                self.parent.logger.info("CameraServer:discover_foscam_m: Adding camera: %s" % (cam['name']))
+                FoscamMJPEG(self.parent, True, self.parent.cam_config['user'], self.parent.cam_config['password'], udp_data=cam)
                 self.num_cams += 1
                 self.set_driver('GV2', self.num_cams, uom=56, report=True)
-                self.parent.logger.info("CameraServer:discover_foscam_m: Done Adding camera: %s:%s" % (cam['ip'], cam['port']))
-        self.parent.logger.info("CameraServer:discover_foscam_m: Done")
+            else:
+                self.parent.logger.info("CameraServer:discover_foscam_m: Already exists: %s %s" % (cam['id'], cam['name']))
+            self.parent.logger.info("CameraServer:discover_foscam_m: Done")
         
     def poll(self):
         """ Poll TODO: Ping the camera?  """

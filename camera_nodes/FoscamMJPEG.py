@@ -5,7 +5,7 @@
 #  - And var alarm_http=1;
 #  - Can't use ping for "responding" since it needs root?  So now it is always the same as "connected"
 
-VERSION = 0.2
+VERSION = 0.3
 
 import os
 from polyglot.nodeserver_api import Node
@@ -17,32 +17,67 @@ class FoscamMJPEG(Node):
     """ 
     Node that contains the Hub connection settings 
     """
-    def __init__(self, parent, primary, ip_address, port, user, password, manifest=None, name=None, address=None):
+
+    def __init__(self, parent, primary, user, password, manifest=None, udp_data=None, address=None):
         self.parent      = parent
-        self.ip          = ip_address
-        self.port        = port
         self.user        = user
         self.password    = password
         self.connected   = 0
-        self.parent.logger.info("FoscamMJPEG:init: Adding %s:%s" % (self.ip,self.port))
-        #
-        # Get status which contains the camera id and alias, and we need it to add Motion node.
-        self._get_status()
-        if not self.status:
-            return None
-        if name is None:
-            name     = self.status['alias']
-        if address is None:
-            address  = self.status['id']
-        # Address must be lower case?
-        address = address.lower()
+        self.parent.logger.info("FoscamMJPEG:init: Adding manifest=%s upd_data=%s" % (manifest,udp_data))
+        self.auth_mode   = 0
+        # Use manifest values if passed in.
+        if manifest is not None:
+            self.name  = manifest['name']
+            if address is None:
+                self.parent.send_error("FoscamMJPEG:init:%s: address must be passed in when using manifest for: " % (name,manifest))
+                return False
+            self.address = address
+            # TODO: It's ok to not have drivers?  Just let query fill out the info? 
+            if not 'drivers' in manifest:
+                self.parent.send_error("FoscamMJPEG:init:%s: no drivers in manifest: " % (name,manifest))
+                return False
+            drivers = manifest['drivers']
+            # Get the things we need from the drivers, the rest will be queried.
+            self.ip    = long2ip(drivers['GV2'])
+            self.port  = drivers['GV3']
+            # New in 0.3
+            if 'GV10' in drivers:
+                self.auth_mode = drivers['GV10']
+            else:
+                # Old default was digest
+                self.auth_mode = 1
+            if 'GV11' in drivers:
+                self.sys_ver = drivers['GV11']
+            else:
+                # Old default was digest
+                self.sys_ver = 0.0
+        elif udp_data is not None:
+            self.name      = udp_data['name']
+            self.address   = udp_data['id'].lower()
+            self.auth_mode = self._get_auth_mode(udp_data['sys'])
+            self.ip        = udp_data['ip']
+            self.port      = udp_data['port']
+            self.sys_ver   = self._parse_sys_ver(udp_data['sys'])
+        else:
+            self.parent.send_error("FoscamMJPEG:init:%s: One of manifest or udp_data must be passed in." % (address))
+            return False
         # Add the Camera
-        super(FoscamMJPEG, self).__init__(parent, address, name, primary, manifest)
-        self.set_driver('GV1', VERSION, uom=56, report=False)
-        self.set_driver('GV2', ip2long(ip_address), uom=56, report=False)
-        self.set_driver('GV3', port, uom=56, report=False)
-        self._get_params();
-        # Add my motion node.
+        self.parent.logger.info("FoscamMJPEG:init: Adding %s %s auth_mode=%d" % (self.name,self.address,self.auth_mode))
+        super(FoscamMJPEG, self).__init__(parent, self.address, self.name, primary, manifest)
+        self.set_driver('GV1',  VERSION, uom=56, report=False)
+        self.set_driver('GV2',  ip2long(self.ip), uom=56, report=False)
+        self.set_driver('GV3',  self.port, uom=56, report=False)
+        self.set_driver('GV10', self.auth_mode, uom=25, report=False)
+        self.set_driver('GV11', self.sys_ver, uom=56, report=False)
+        # Init these in case we can't query.
+        self.status = {}
+        self.params = {}
+        for param in ('led_mode', 'alarm_motion_armed', 'alarm_mail', 'alarm_motion_sensitivity', 'alarm_motion_compensation'):
+            if not param in self.params:
+                self.params[param] = 0
+        # Call query to pull in the params before adding the motion node.
+        self.query();
+        # Add my motion node now that the camera is defined.
         self.motion = Motion(parent, self, manifest)
         # Tell the camera to ping the parent server on motion.
         self._set_alarm_params({
@@ -50,15 +85,18 @@ class FoscamMJPEG(Node):
             'http':         1,
             'http_url':     "http://%s:%s/motion/%s" % (parent.server.server_address[0], parent.server.server_address[1], self.motion.address)
         });
-        # Call query to pull in the params.
+        # Query again now that we have set paramaters
         self.query();
-        self.parent.logger.info("FoscamMJPEG:init: Added camera at %s:%s '%s' %s" % (self.ip,self.port,name,address))
+        self.parent.logger.info("FoscamMJPEG:init: Added camera at %s:%s '%s' %s" % (self.ip,self.port,self.name,self.address))
 
     def query(self, **kwargs):
         """ query the camera """
         # pylint: disable=unused-argument
         self.parent.logger.info("FoscamMJPEG:query:start:%s" % (self.name))
+        # Get current camera params.
         self._get_params();
+        # Get current camera status.
+        self._get_status();
         # Set GV4 Responding
         self.set_driver('GV4', self.connected, uom=2, report=False)
         if self.params:
@@ -73,12 +111,12 @@ class FoscamMJPEG(Node):
 
     def _http_get(self, path, payload = {}):
         """ Call http_get on this camera for the specified path and payload """
-        return self.parent.http_get(self.ip,self.port,self.user,self.password,path,payload)
+        return self.parent.http_get(self.ip,self.port,self.user,self.password,path,payload,auth_mode=self.auth_mode)
         
     def _http_get_and_parse(self, path, payload = {}):
         """ 
         Call http_get and parse the returned Foscam data into a hash.  The data 
-        is all looks like:  var id='000C5DDC9D6C';
+        all looks like:  var id='000C5DDC9D6C';
         """
         data = self._http_get(path,payload)
         if data is False:
@@ -91,11 +129,13 @@ class FoscamMJPEG(Node):
     
     def _get_params(self):
         """ Call get_params and get_misc on the camera and store in params """
-        self.params = self._http_get_and_parse("get_params.cgi")
-        if self.params:
-            self.connected = 1
-        else:
+        params = self._http_get_and_parse("get_params.cgi")
+        if not params:
+            self.parent.send_error("FoscamMJPEG:_get_params:%s: Unable to get_params" % (self.name))
             self.connected = 0
+            return False
+        self.connected = 1
+        self.params = self._http_get_and_parse("get_params.cgi")
         misc = self._http_get_and_parse("get_misc.cgi")
         self.params['led_mode'] = misc['led_mode']
 
@@ -110,9 +150,34 @@ class FoscamMJPEG(Node):
         connected = 0
         if self.status:
             connected = 1
+        # Connected status changed, report it.
         if connected != self.connected:
+            self.connected = connected
             self.set_driver('GV4', connected, report=True)
     
+    def _parse_sys_ver(self,sys_ver):
+        """ 
+        Given the camera system version as a string, parse into what we 
+        show, which is the last 2 digits
+        """
+        vnums = sys_ver.split(".")
+        self.parent.logger.debug("FoscamMJPEG:parse_sys_ver: %s 0=%s 1=%s 2=%s 3=%s",sys_ver,vnums[0],vnums[1],vnums[2],vnums[3])
+        ver = myfloat("%d.%d" % (int(vnums[2]),int(vnums[3])),2)
+        self.parent.logger.debug("FoscamMJPEG:parse_sys_ver: ver=%f",ver)
+        return ver
+        
+    def _get_auth_mode(self,sys_ver):
+        """ 
+        Given the camera system version as a string, figure out the 
+        authorization mode.  Default is 0 (Basic) but if last 2 
+        digits of sys_ver are > 2.52 then use 1 (Digest)
+        """
+        auth_mode = 0
+        vnums = sys_ver.split(".")
+        if int(vnums[2]) >= 2 and int(vnums[3]) > 52:
+            auth_mode = 1
+        return auth_mode
+        
     def _set_alarm_params(self,params):
         """ 
         Set the sepecified alarm params on the camera
@@ -134,6 +199,24 @@ class FoscamMJPEG(Node):
         self.parent.logger.info("FoscamMJPEG:set_decoder_control:%s: %s" % (self.name,params))
         return self._http_get("decoder_control.cgi",params)
 
+    def get_motion_status(self):
+        """
+        Called by motion node to return the current motion status.
+        0 = Off
+        1 = On
+        2 = Unknown
+        """
+        self._get_status()
+        if not self.status or not 'alarm_status' in self.status:
+            return 2
+        return int(self.status['alarm_status'])
+
+    def set_motion_status(self,value):
+        """
+        Called by motion node to set the current motion status.
+        """
+        self.status['alarm_status'] = value
+
     def _get_status(self,report=True):
         """ 
         Call get_status on the camera and store in status
@@ -141,12 +224,22 @@ class FoscamMJPEG(Node):
         # Can't spit out the device name cause we might not know it yet.
         self.parent.logger.info("FoscamMJPEG:get_status: %s:%s" % (self.ip,self.port))
         # Get the status
-        self.status = self._http_get_and_parse("get_status.cgi")
-        if self.status:
-            self.connected = 1
+        status = self._http_get_and_parse("get_status.cgi")
+        if status:
+            connected = 1
+            self.status = status
+            # Update sys_ver if it's different
+            if self.sys_ver != self.status['sys_ver']:
+                self.sys_ver = self._parse_sys_ver(self.status['sys_ver'])
+                self.set_driver('GV11', self.sys_ver, uom=56, report=True)
         else:
-            self.connected = 0
-            self.parent.send_error("Failed to get_status of camera %s:%s" % (self.ip,self.port))
+            self.parent.send_error("FoscamMJPEG:_get_params:%s: Failed to get_status" % (self.name))
+            # Set alarm status to unknown
+            self.status['alarm_status'] = 2
+            connected = 0
+        if connected != self.connected:
+            self.connected = connected
+            self.set_driver('GV4', self.connected, uom=2, report=True)
 
     def _set_alarm_param(self, driver=None, param=None, **kwargs):
         value = kwargs.get("value")
@@ -190,8 +283,25 @@ class FoscamMJPEG(Node):
             dvalue = 94
         else:
             dvalue = 95
-        if not self._decoder_control( { 'command': dvalue} ):
-            self.parent.send_error("_set_irled failed to set %s" % (dvalue) )
+        if self._decoder_control( { 'command': dvalue} ):
+            # TODO: Not storing this cause the camera doesn't allow us to query it.
+            #self.set_driver("GVxx", myint(value), 56)
+            return True
+        self.parent.send_error("_set_irled failed to set %s" % (dvalue) )
+        return False
+
+    def _set_authm(self, **kwargs):
+        """ Set the auth mode 0=Basic 1=Digest """
+        value = kwargs.get("value")
+        if value is None:
+            self.parent.send_error("_set_authm not passed a value: %s" % (value) )
+            return False
+        self.auth_mode = int(value)
+        self.parent.logger.debug("FoscamMJPEG:set_authm: %s",self.auth_mode)
+        self.set_driver("GV10", self.auth_mode, 25)
+        # Since they changed auth mode, make sure it works.
+        self.query()
+        self.motion.query()
         return True
 
     def _goto_preset(self, **kwargs):
@@ -223,6 +333,8 @@ class FoscamMJPEG(Node):
         'GV7': [0, 2,  myint],
         'GV8': [0, 25, myint],
         'GV9': [0, 2,  myint],
+        'GV10': [0, 25,  myint],
+        'GV11': [0, 56,  myfloat],
     }
     """ Driver Details:
     GV1:  float:   Version of this code.
@@ -234,6 +346,8 @@ class FoscamMJPEG(Node):
     GV7:  integer: Alarm Send Mail
     GV8:  integer: Motion Sensitivity
     GV9:  integer: Motion Compenstation
+    GV10; integer: Authorization Mode
+    GV11: float:   Camera System Version
     """
     _commands = {
         'QUERY': query,
@@ -243,6 +357,7 @@ class FoscamMJPEG(Node):
         'SET_ALML':  partial(_set_alarm_param, driver="GV7", param='motion_mail'),
         'SET_ALMOS': partial(_set_alarm_param, driver="GV8", param='motion_sensitivity'),
         'SET_ALMOC': partial(_set_alarm_param, driver="GV9", param='motion_compensation'),
+        'SET_AUTHM': _set_authm,
         'SET_POS':   _goto_preset,
         'REBOOT':    _reboot,
     }

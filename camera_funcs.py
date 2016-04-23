@@ -16,4 +16,3 @@ def ip2long(ip):
 
 def long2ip(value):
     return socket.inet_ntoa(struct.pack('!L', value))
-    
