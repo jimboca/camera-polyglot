@@ -18,9 +18,7 @@ from functools import partial
 from foscam_poll import foscam_poll
 from camera_nodes import *
 from camera_funcs import myint,long2ip
-
-# CameraServer version number
-CAMERA_SERVER_VERSION = 0.4
+from camera_polyglot_version import VERSION
 
 class CameraServer(Node):
     """ Node that contains the Main Camera Server settings """
@@ -61,7 +59,7 @@ class CameraServer(Node):
     def query(self, **kwargs):
         """ Look for cameras """
         self.parent.logger.info("CameraServer:query:")
-        self.set_driver('GV1', CAMERA_SERVER_VERSION, report=False)
+        self.set_driver('GV1', VERSION, report=False)
         self.set_driver('GV2', self.num_cams, uom=56, report=False)
         self.set_driver('GV3', self.foscam_mjpeg, uom=25, report=False)
         self.set_driver('GV4', self.debug_mode, uom=25, report=False)
@@ -99,7 +97,11 @@ class CameraServer(Node):
             self.parent.logger.info("CameraServer:discover_foscam_m: Done")
         
     def poll(self):
-        """ Poll TODO: Ping the camera?  """
+        """ Poll Nothing  """
+        return
+
+    def long_poll(self):
+        """ Long Poll Nothing  """
         return
 
     def _set_foscam_mjpeg(self, **kwargs):

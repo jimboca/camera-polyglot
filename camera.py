@@ -24,6 +24,8 @@ import camera_nodes
 # And have all camera_nodes defined at the current level?  But have to import them all?
 from camera_nodes import CameraServer
 
+from camera_polyglot_version import VERSION
+
 global _REST_HANDLER
 
 class CameraNodeServer(SimpleNodeServer):
@@ -33,7 +35,7 @@ class CameraNodeServer(SimpleNodeServer):
     def setup(self):
         """ Initial node setup. """
         super(SimpleNodeServer, self).setup()
-        self.logger.info('CameraNodeServer starting up.')
+        self.logger.info('CameraNodeServer: Version=%s starting up.' % (VERSION))
         self.logger.info("CameraNodeServer: Sandbox=%s" % (self.poly.sandbox))
         self.logger.info("CameraNodeServer: Config=%s" % (self.config))
         # Setup the config data.
@@ -94,8 +96,12 @@ class CameraNodeServer(SimpleNodeServer):
         return True
 
     def long_poll(self):
-        """ Save configuration every 30 seconds. """
+        """ Call long_poll on all nodes and Save configuration every 30 seconds. """
+        self.logger.debug("CameraNodeServer:long_poll")
         self.update_config()
+        for node_addr, node in self.nodes.items():
+            node.long_poll()
+        return True
 
     def on_exit(self, **kwargs):
         self.server.socket.close()
@@ -132,8 +138,9 @@ class CameraNodeServer(SimpleNodeServer):
                 params=payload,
                 timeout=10
             )
-        except requests.exceptions.Timeout:
-            self.send_error("Connection timed out")
+        # This is supposed to catch all request excpetions.
+        except requests.exceptions.RequestException as e:
+            self.send_error("Connection error for %s: %s" % (url, e))
             return False
         self.logger.debug("http_get: Got: code=%s", response.status_code)
         if response.status_code == 200:

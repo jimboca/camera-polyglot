@@ -46,6 +46,17 @@ class Motion(Node):
             return self.query()
         return True
 
+    def long_poll(self):
+        """
+        Motion doesn't do long poll cause the camera handles it
+        """
+        self.parent.logger.info("Motion:long_poll:%s:" % (self.name))
+        # Only check motion if it's unknown
+        if self.motion_st == 2:
+            self.parent.logger.info("Motion:long_poll:%s: Check Motion" % (self.name))
+            return self.query()
+        return True
+    
     _drivers = {
         'ST': [0, 25, myint],
     }

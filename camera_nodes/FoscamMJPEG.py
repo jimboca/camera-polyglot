@@ -12,6 +12,7 @@ from polyglot.nodeserver_api import Node
 from Motion import Motion
 from functools import partial
 from camera_funcs import myint,myfloat,ip2long,long2ip
+from camera_polyglot_version import VERSION
 
 class FoscamMJPEG(Node):
     """ 

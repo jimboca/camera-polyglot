@@ -18,6 +18,7 @@ This node server is intended to support any type of camera.  Currently the follo
 
 1. Currently you must be running at least the unstable-rc version of polyglot.  You must grab the uncompiled version as instructed here:  https://github.com/UniversalDevicesInc/Polyglot/wiki/Polyglot-README#to-run-the-python-module-non-compiled-version Then also switch to the unstable-rc branch before running polyglot with `git checkout unstable-rc` when in the checked out Polyglot directory.  But, if you are using another node server you pulled down from github, it may not yet be compatible so check with the Author before switching to this version!
 2. This has only been tested on the ISY 5.0.2 Firmware.
+3. Install required python modules as instructed in Install Step #1
 
 # Install
 
@@ -27,6 +28,7 @@ Install:
   * `cd polyglot/config/node_servers`
   * `git clone https://github.com/jimboca/camera-polyglot.git`
   * `cd camera-polyglot`
+  * `sudo pip install -r requirements.txt`
 2. From the polyglot web page: http://your.pi.ip:8080
   * Refresh the page
   * Select 'Add Node Server'
