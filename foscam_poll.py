@@ -30,7 +30,7 @@ def foscam_poll(logger=None,verbose=False):
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
     # Bind UDP socket to local port so we can receive pings
-    sock.bind(('', PING_PORT_NUMBER))
+    sock.bind(('',0)) # Was, PING_PORT_NUMBER, but sender can be any open port.
     # Use timeout
     sock.settimeout(PING_INTERVAL)
 
