@@ -43,7 +43,7 @@ class Motion(Node):
         #self.parent.logger.debug("Motion:poll:%s: Motion=%d" % (self.name,self.motion_st))
         if self.motion_st == 1:
             self.parent.logger.info("Motion:poll:%s: Check Motion" % (self.name))
-            return self.query()
+            self.query()
         return True
 
     def long_poll(self):
@@ -54,7 +54,7 @@ class Motion(Node):
         # Only check motion if it's unknown
         if self.motion_st == 2:
             self.parent.logger.info("Motion:long_poll:%s: Check Motion" % (self.name))
-            return self.query()
+            self.query()
         return True
     
     _drivers = {

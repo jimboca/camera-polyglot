@@ -5,8 +5,6 @@
 #  - And var alarm_http=1;
 #  - Can't use ping for "responding" since it needs root?  So now it is always the same as "connected"
 
-VERSION = 0.3
-
 import os
 from polyglot.nodeserver_api import Node
 from Motion import Motion
@@ -52,6 +50,7 @@ class FoscamMJPEG(Node):
             else:
                 # Old default was digest
                 self.sys_ver = 0.0
+            self.full_sys_ver = self.sys_ver
         elif udp_data is not None:
             self.name      = udp_data['name']
             self.address   = udp_data['id'].lower()
@@ -59,6 +58,7 @@ class FoscamMJPEG(Node):
             self.ip        = udp_data['ip']
             self.port      = udp_data['port']
             self.sys_ver   = self._parse_sys_ver(udp_data['sys'])
+            self.full_sys_ver = str(udp_data['sys'])
         else:
             self.parent.send_error("FoscamMJPEG:init:%s: One of manifest or udp_data must be passed in." % (address))
             return False
@@ -147,14 +147,9 @@ class FoscamMJPEG(Node):
 
     def long_poll(self):
         self.parent.logger.info("FoscamMJPEG:long_poll:%s:" % (self.name))
+        # get_status handles properly setting self.connected and the driver
+        # so just call it.
         self._get_status()
-        connected = 0
-        if self.status:
-            connected = 1
-        # Connected status changed, report it.
-        if connected != self.connected:
-            self.connected = connected
-            self.set_driver('GV4', connected, report=True)
     
     def _parse_sys_ver(self,sys_ver):
         """ 
@@ -230,13 +225,18 @@ class FoscamMJPEG(Node):
             connected = 1
             self.status = status
             # Update sys_ver if it's different
-            if self.sys_ver != self.status['sys_ver']:
+            if self.full_sys_ver != str(self.status['sys_ver']):
+                self.parent.logger.info("FoscamMJPEG:get_status:%s: New sys_ver %s != %s" % (self.name,self.full_sys_ver,str(self.status['sys_ver'])))
+                self.full_sys_ver = str(self.status['sys_ver'])
                 self.sys_ver = self._parse_sys_ver(self.status['sys_ver'])
                 self.set_driver('GV11', self.sys_ver, uom=56, report=True)
         else:
             self.parent.send_error("FoscamMJPEG:_get_params:%s: Failed to get_status" % (self.name))
-            # Set alarm status to unknown
-            self.status['alarm_status'] = 2
+            # inform the motion node there is an issue if we have a motion node
+            if hasattr(self,'motion'):
+                self.motion.motion(2)
+            else:
+                self.status['alarm_status'] = 2
             connected = 0
         if connected != self.connected:
             self.connected = connected
