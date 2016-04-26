@@ -23,8 +23,7 @@ from requests.auth import HTTPDigestAuth,HTTPBasicAuth
 import camera_nodes
 # And have all camera_nodes defined at the current level?  But have to import them all?
 from camera_nodes import CameraServer
-
-from camera_polyglot_version import VERSION
+from camera_polyglot_version import VERSION_MAJOR,VERSION_MINOR
 
 global _REST_HANDLER
 
@@ -35,7 +34,7 @@ class CameraNodeServer(SimpleNodeServer):
     def setup(self):
         """ Initial node setup. """
         super(SimpleNodeServer, self).setup()
-        self.logger.info('CameraNodeServer: Version=%s starting up.' % (VERSION))
+        self.logger.info('CameraNodeServer: Version=%s.%s starting up.' % (VERSION_MAJOR,VERSION_MINOR))
         self.logger.info("CameraNodeServer: Sandbox=%s" % (self.poly.sandbox))
         self.logger.info("CameraNodeServer: Config=%s" % (self.config))
         # Setup the config data.

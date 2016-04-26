@@ -10,7 +10,7 @@ from polyglot.nodeserver_api import Node
 from Motion import Motion
 from functools import partial
 from camera_funcs import myint,myfloat,ip2long,long2ip
-from camera_polyglot_version import VERSION
+from camera_polyglot_version import VERSION_MAJOR,VERSION_MINOR
 
 class FoscamMJPEG(Node):
     """ 
@@ -65,7 +65,8 @@ class FoscamMJPEG(Node):
         # Add the Camera
         self.parent.logger.info("FoscamMJPEG:init: Adding %s %s auth_mode=%d" % (self.name,self.address,self.auth_mode))
         super(FoscamMJPEG, self).__init__(parent, self.address, self.name, primary, manifest)
-        self.set_driver('GV1',  VERSION, uom=56, report=False)
+        self.set_driver('GV1',  VERSION_MAJOR, uom=56, report=False)
+        self.set_driver('GV12', VERSION_MINOR, uom=56, report=False)
         self.set_driver('GV2',  ip2long(self.ip), uom=56, report=False)
         self.set_driver('GV3',  self.port, uom=56, report=False)
         self.set_driver('GV10', self.auth_mode, uom=25, report=False)
@@ -336,9 +337,10 @@ class FoscamMJPEG(Node):
         'GV9': [0, 2,  myint],
         'GV10': [0, 25,  myint],
         'GV11': [0, 56,  myfloat],
+        'GV12': [0, 56,  myfloat],
     }
     """ Driver Details:
-    GV1:  float:   Version of this code.
+    GV1:  float:   Version of this code (Major)
     GV2:  unsigned integer: IP Address
     GV3:  integer: Port
     GV4:  integer: Responding
@@ -349,6 +351,7 @@ class FoscamMJPEG(Node):
     GV9:  integer: Motion Compenstation
     GV10; integer: Authorization Mode
     GV11: float:   Camera System Version
+    GV11: float:   Version of this code (Minor)
     """
     _commands = {
         'QUERY': query,

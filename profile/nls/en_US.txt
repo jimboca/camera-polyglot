@@ -2,7 +2,8 @@
 # Camera Server
 ND-CameraServer-NAME = Camera Server
 ND-CameraServer-ICON = Input
-ST-CAMS-GV1-NAME = Version
+ST-CAMS-GV1-NAME = Polyglot Node Version Major
+ST-CAMS-GV5-NAME = Polyglot Node Version Minor
 ST-CAMS-GV2-NAME = Cameras
 ST-CAMS-GV3-NAME = Foscam MJPEG Search
 ST-CAMS-GV4-NAME = Debug Mode
@@ -31,7 +32,8 @@ ND-FoscamMJPEG-ICON = Input
 ND-FCAM1-ICON = Input
 
 # Camera Controls
-ST-CAM-GV1-NAME = Node Version
+ST-CAM-GV1-NAME = Polyglot Node Version Major
+ST-CAM-GV12-NAME = Polyglot Node Version Minor
 ST-CAM-GV2-NAME = IP Address
 ST-CAM-GV3-NAME = Port
 ST-CAM-GV4-NAME = Responding
@@ -41,7 +43,7 @@ ST-CAM-GV7-NAME = Alarm Send Mail
 ST-CAM-GV8-NAME = Motion Sensitivity
 ST-CAM-GV9-NAME = Motion Compensation
 ST-CAM-GV10-NAME = Authorization Mode
-ST-CAM-GV11-NAME = System Version
+ST-CAM-GV11-NAME = Camera System Version
 
 CMD-ST-NAME = Query
 CMD-CAM-REBOOT-NAME = Reboot
@@ -90,6 +92,10 @@ ALMOS-6 = Sensitivity 6
 ALMOS-7 = Sensitivity 7
 ALMOS-8 = Sensitivity 8
 ALMOS-9 = Sensitivity 9 (Lowest)
+
+# Mode: Off, On
+MOO-0 = Off
+MOO-1 = On
 
 # Status: Off, On, Unknown
 SOOU-0 = Off

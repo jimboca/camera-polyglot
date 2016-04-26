@@ -18,7 +18,7 @@ from functools import partial
 from foscam_poll import foscam_poll
 from camera_nodes import *
 from camera_funcs import myint,long2ip
-from camera_polyglot_version import VERSION
+from camera_polyglot_version import VERSION_MAJOR,VERSION_MINOR
 
 class CameraServer(Node):
     """ Node that contains the Main Camera Server settings """
@@ -59,7 +59,8 @@ class CameraServer(Node):
     def query(self, **kwargs):
         """ Look for cameras """
         self.parent.logger.info("CameraServer:query:")
-        self.set_driver('GV1', VERSION, report=False)
+        self.set_driver('GV1', VERSION_MAJOR, report=False)
+        self.set_driver('GV5', VERSION_MINOR, report=False)
         self.set_driver('GV2', self.num_cams, uom=56, report=False)
         self.set_driver('GV3', self.foscam_mjpeg, uom=25, report=False)
         self.set_driver('GV4', self.debug_mode, uom=25, report=False)
@@ -137,12 +138,14 @@ class CameraServer(Node):
         'GV2': [0, 56, myint],
         'GV3': [0, 25, myint],
         'GV4': [0, 25, myint],
+        'GV5': [0, 56, float],
     }
     """ Driver Details:
-    GV1: integer: This server version number
+    GV1:   float:   Version of this code (Major)
     GV2: integer: Number of the number of cameras we manage
     GV3: integer: foscam Polling
     GV4: integer: Log Mode
+    GV5:   float:   Version of this code (Major)
     """
     _commands = {
         'QUERY': query,

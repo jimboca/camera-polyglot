@@ -5,6 +5,7 @@
   <nodeDef id="CameraServer" nodeType="139" nls="CAMS">
     <sts>
       <st id="GV1" editor="FLOAT" />
+      <st id="GV5" editor="FLOAT" />
       <st id="GV2" editor="I_INTEGER" />
       <st id="GV3" editor="I_FOSCAM_MJPEG" />
       <st id="GV4" editor="I_DM" />
@@ -30,7 +31,8 @@
 
   <nodeDef id="FoscamMJPEG" nodeType="139" nls="CAM">
     <sts>
-      <st id="GV1"  editor="FLOAT" />
+      <!-- <st id="GV1"  editor="FLOAT" /> -->
+      <!-- <st id="GV12" editor="FLOAT" /> -->
       <st id="GV11" editor="FLOAT" />
       <st id="GV10" editor="I_AUTHM" />
       <!-- <st id="GV2"  editor="I_INTEGER" /> -->
