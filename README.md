@@ -72,7 +72,6 @@ To update, go to where you grabbed camera-polyglot and update:
 1. `cd camera-polyglot`
 2. `git pull`
 3. Go to polyglot web page and Restart Server
-4. 
 
 If the update has profile changes, then download the new profile from the Polyglot web page, and upload the profile into your node server on the ISY.
 
