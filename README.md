@@ -68,6 +68,7 @@ Install:
 # Update
 
 To update, go to where you grabbed camera-polyglot and update:
+
 1. `cd camera-polyglot`
 2. `git pull`
 3. Go to polyglot web page and Restart Server
