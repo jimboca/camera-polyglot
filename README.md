@@ -65,6 +65,16 @@ Install:
   * After about 30 seconds it should have found and added any camera.
 12. Write programs and enjoy.
 
+# Update
+
+To update, go to where you grabbed camera-polyglot and update:
+1. `cd camera-polyglot`
+2. `git pull`
+3. Go to polyglot web page and Restart Server
+4. 
+
+If the update has profile changes, then download the new profile from the Polyglot web page, and upload the profile into your node server on the ISY.
+
 # Debugging
 
 This node server creates a log file as Polyglot/config/camera-polyglot/camera.log, where 'camera' is what you called the node server in Polyglot.  If you have any issues, first review that file, and also look for Errors with 'grep ERROR camera.log'.
