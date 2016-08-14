@@ -7,12 +7,24 @@ MIT license.
 This node server is intended to support any type of camera.  Currently the following are supported:
 
 1.Foscam MJPEG
-  This is any Foscam Camera whose model begins with F18.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
-  This uses UDP broadcasts to discover and add the cameras.  The same way the Foscam 'IP Camera Tool' finds your cameras.  So there is no need to setup ip address and port for each one.  It uses the Camera ID as the ISY device address, and Camera Alias as the ISY name.
+  This is any Foscam Camera MJPEG camera.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
+  * See README_foscam.md for more information
   * All the params are documented in the pdf mentioned above, if you have questions about them, please read that document first.
-  * The IP Adresses is stored as an unsigned integer in the ISY, but the ISY displays it as a signed integer, so it shows up in the Admin Consol as 2147483647 since that is the max value if a signed integer.  You can just ignore this for now, hopefully someday the ISY will display this correctly, and maybe even as an IP Address.
   * The 'IR LED' only has a set option, and does not display the status because it seems there is no way to get the status of this from the camera that I can find.  If you know how, please tell me!
-  * The 'Network LED Mode' is the led_mode from the camera which is defined as 'Mode 0', 'Mode 1', and 'Mode 2' which Mode 2 is Off.  If you know what Mode 0 and 1 should be labeled as, please let me know.
+  * The 'Network LED Mode' is the led_mode from the camera which is defined as:
+    * led_mode=0 : LED indicates network connection
+    * led_mode=1 : LED indicates connected network type 
+    * led_mode=2 : LED deactivated except during camera boot
+
+2. Foscam HD
+   Suitable for all cameras using the CGIProxy.fcgi interface
+   * ftp://109.108.88.53/Nadzor/FOSCAM/SDK%20CGI/HD%20cameras%20SDK%20CGI/Foscam%20IPCamera%20CGI%20User%20Guide-V1.0.4.pdf
+   * Example: http://192.168.1.2/cgi-bin/CGIProxy.fcgi&usr=admin&pwd=123&cmd=ABC
+   
+3. Foscam H.264
+   Currently not supported, but could be added:
+    * ftp://109.108.88.53/Nadzor/FOSCAM/SDK%20CGI/H.264%20CGI%20SDK/H.264%20CGI%20SDK/FC%20IP%20Camera%20CGI%20User%20Manual.pdf
+    * Example: http://192.168.1.88/cgi-bin/hi3510/param.cgi?cmd=getvencattr&-chn=11 
 
 # Requirements
 

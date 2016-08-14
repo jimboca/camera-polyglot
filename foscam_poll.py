@@ -73,12 +73,25 @@ def foscam_poll(logger=None,verbose=False):
         if msg == SEARCH_REQUEST:
             if logger is not None:
                 logger.debug("ignore my echo")
-        elif len(msg) == 88:
-            upk = unpack('>23s13s21s4I4b4b4bH?',msg)
+        elif len(msg) == 88 or len(msg) == 121 or len(msg) == 129:
+            if len(msg) == 88:
+                upk = unpack('>23s13s21s4I4b4b4bH?',msg)
+                (header, id, name, ip_i, mask_i, gateway_i, dns_i, r1, r2, r3, r4, s1, s2, s3, s4, a1, a2, a3, a4, port, dhcp) = upk
+                type = ""
+            elif len(msg) == 121:
+                # I can't find documentation for the last 19 and 14 bytes, but the 14 seems to
+                # be a string that indicates what type of camera A=HD and b=H.264
+                # I see this for my FI9828P V2
+                upk = unpack('>23s13s21s4I4b4b4bH?19s14s',msg)
+                (header, id, name, ip_i, mask_i, gateway_i, dns_i, r1, r2, r3, r4, s1, s2, s3, s4, a1, a2, a3, a4, port, dhcp, unknown, type) = upk
+            elif len(msg) == 129:
+                # And this has has another 8 bytes at the end?  I see this on my FI9826P V2
+                upk = unpack('>23s13s21s4I4b4b4bH?19s14s8s',msg)
+                (header, id, name, ip_i, mask_i, gateway_i, dns_i, r1, r2, r3, r4, s1, s2, s3, s4, a1, a2, a3, a4, port, dhcp, unknown1, type, unknown2) = upk
             if verbose and logger is not None:
                 logger.debug(upk)
-            (header, id, name, ip_i, mask_i, gateway_i, dns_i, r1, r2, r3, r4, s1, s2, s3, s4, a1, a2, a3, a4, port, dhcp) = upk
-            client = { 
+            client = {
+                'type':      type.rstrip('\x00'),
                 'id':        id.rstrip('\x00'),
                 'name':      name.rstrip('\x00'),
                 'ip':        socket.inet_ntoa(pack('!I',ip_i)),

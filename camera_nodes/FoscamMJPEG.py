@@ -107,6 +107,7 @@ class FoscamMJPEG(Node):
             self.set_driver('GV7', self.params['alarm_mail'], uom=2, report=False)
             self.set_driver('GV8', self.params['alarm_motion_sensitivity'], uom=25, report=False)
             self.set_driver('GV9', self.params['alarm_motion_compensation'], uom=2, report=False)
+            self.set_driver('GV13', self.params['alarm_upload_interval'], uom=2, report=False)
         self.report_driver()
         self.parent.logger.info("FoscamMJPEG:query:done:%s" % (self.name))
         return True
@@ -338,6 +339,7 @@ class FoscamMJPEG(Node):
         'GV10': [0, 25,  myint],
         'GV11': [0, 56,  myfloat],
         'GV12': [0, 56,  myfloat],
+        'GV13': [0, 25,  myint],
     }
     """ Driver Details:
     GV1:  float:   Version of this code (Major)
@@ -351,7 +353,8 @@ class FoscamMJPEG(Node):
     GV9:  integer: Motion Compenstation
     GV10; integer: Authorization Mode
     GV11: float:   Camera System Version
-    GV11: float:   Version of this code (Minor)
+    GV12: float:   Version of this code (Minor)
+    GV13; integer: Upload Interval
     """
     _commands = {
         'QUERY': query,
@@ -361,6 +364,7 @@ class FoscamMJPEG(Node):
         'SET_ALML':  partial(_set_alarm_param, driver="GV7", param='motion_mail'),
         'SET_ALMOS': partial(_set_alarm_param, driver="GV8", param='motion_sensitivity'),
         'SET_ALMOC': partial(_set_alarm_param, driver="GV9", param='motion_compensation'),
+        'SET_UPINT': partial(_set_alarm_param, driver="GV13", param='upload_interval'),
         'SET_AUTHM': _set_authm,
         'SET_POS':   _goto_preset,
         'REBOOT':    _reboot,

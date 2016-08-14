@@ -31,18 +31,15 @@
 
   <nodeDef id="FoscamMJPEG" nodeType="139" nls="CAM">
     <sts>
-      <!-- <st id="GV1"  editor="FLOAT" /> -->
-      <!-- <st id="GV12" editor="FLOAT" /> -->
-      <st id="GV11" editor="FLOAT" />
+      <!-- Seems to break Program Condition <st id="GV11" editor="FLOAT" /> -->
       <st id="GV10" editor="I_AUTHM" />
-      <!-- <st id="GV2"  editor="I_INTEGER" /> -->
-      <!-- <st id="GV3"  editor="I_INTEGER" /> -->
-      <st id="GV4"  editor="BOOL" />
-      <st id="GV5"  editor="I_NLEDM" />
-      <st id="GV6"  editor="BOOL" />
-      <st id="GV7"  editor="BOOL" />
-      <st id="GV9"  editor="BOOL" />
-      <st id="GV8"  editor="I_ALMOS" />
+      <st id="GV4" editor="BOOL" />
+      <st id="GV5" editor="I_NLEDM" />
+      <st id="GV6" editor="BOOL" />
+      <st id="GV7" editor="BOOL" />
+      <st id="GV13" editor="I_INTEGER" />
+      <st id="GV9" editor="BOOL" />
+      <st id="GV8" editor="I_ALMOS" />
     </sts>
     <cmds>
       <sends />
@@ -66,6 +63,10 @@
 	<!--  Send email for motion alarm -->
         <cmd id="SET_ALML">
           <p id="" editor="BOOL" init="GV7" />
+        </cmd>
+	<!--  Upload Interval -->
+        <cmd id="SET_UPINT">
+          <p id="" editor="I_INTEGER" init="GV13" />
         </cmd>
 	<!-- Enable alarm motion compensation or not when the light changes suddently，0：no，1：yes  -->
         <cmd id="SET_ALMOC">
