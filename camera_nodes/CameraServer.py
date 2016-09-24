@@ -19,6 +19,7 @@ from foscam_poll import foscam_poll
 from camera_nodes import *
 from camera_funcs import myint,long2ip
 from camera_polyglot_version import VERSION_MAJOR,VERSION_MINOR
+import time
 
 class CameraServer(Node):
     """ Node that contains the Main Camera Server settings """
@@ -33,6 +34,7 @@ class CameraServer(Node):
         self.num_cams   = 0
         self.debug_mode = 10
         self.foscam_mjpeg = 1
+        self._next_beat_t = 0
         if address in manifest:
             drivers = manifest[address]['drivers']
             if 'GV4' in drivers:
@@ -56,6 +58,9 @@ class CameraServer(Node):
                             manifest=data, address=address)
                 self.num_cams += 1
         
+    def _st(self, **kwargs):
+        return self.set_driver('ST', time.time(), report=True)
+
     def query(self, **kwargs):
         """ Look for cameras """
         self.parent.logger.info("CameraServer:query:")
@@ -103,8 +108,13 @@ class CameraServer(Node):
             self.parent.logger.info("CameraServer:discover_foscam: Done")
         
     def poll(self):
-        """ Poll Nothing  """
-        return
+        """ Poll Send DON every 60 seconds or so  """
+        now = time.time()
+        if now > self._next_beat_t:
+            self._next_beat_t = now + 60
+            self.set_driver('ST', now, report=True)
+            self.report_isycmd('DON')
+        return True
 
     def long_poll(self):
         """ Long Poll Nothing  """
@@ -139,6 +149,7 @@ class CameraServer(Node):
         return True
     
     _drivers = {
+        'ST':  [0, 56, int, False],        
         'GV1': [0, 56, float],
         'GV2': [0, 56, myint],
         'GV3': [0, 25, myint],
@@ -153,11 +164,17 @@ class CameraServer(Node):
     GV5:   float:   Version of this code (Major)
     """
     _commands = {
+        'ST': _st,
         'QUERY': query,
         'DISCOVER': discover,
         'SET_FOSCAM_MJPEG': _set_foscam_mjpeg,
         'SET_DM': _set_debug_mode,
     }
+
+    _sends = {
+        'DON': [None, None, None]
+    }
+    
     # The nodeDef id of this camers.
     node_def_id = 'CameraServer'
 

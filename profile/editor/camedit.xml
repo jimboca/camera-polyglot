@@ -1,6 +1,12 @@
 <editors>
 
-   <editor id="I_INTEGER">
+  <!-- Raw integer (e.g. time-since-epoch) value -->
+  <editor id="RAWINT">
+    <!-- 56 is "raw value" -->
+    <range uom="56" min="0" max="2147483647" step="1" prec="0" />
+  </editor>
+
+  <editor id="I_INTEGER">
        <range uom="25" min="0" max="1000" prec="0" />
    </editor>
 

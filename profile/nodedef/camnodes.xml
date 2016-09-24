@@ -6,12 +6,15 @@
     <sts>
       <st id="GV1" editor="FLOAT" />
       <st id="GV5" editor="FLOAT" />
+      <st id="ST" editor="RAWINT" />
       <st id="GV2" editor="I_INTEGER" />
       <st id="GV3" editor="I_FOSCAM_MJPEG" />
       <st id="GV4" editor="I_DM" />
     </sts>
     <cmds>
-      <sends />
+      <sends>
+	<cmd id="DON" />
+      </sends>
       <accepts>
 	<cmd id="QUERY" />
 	<cmd id="DISCOVER" />
