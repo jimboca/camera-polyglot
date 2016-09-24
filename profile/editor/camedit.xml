@@ -13,7 +13,7 @@
    </editor>
 
    <editor id="FLOAT">
-       <range uom="56" />
+       <range uom="56" min="0.1" max="999.999"/>
    </editor>
 
    <editor id="I_OOU">

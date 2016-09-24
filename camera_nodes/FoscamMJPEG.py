@@ -74,7 +74,7 @@ class FoscamMJPEG(Node):
         # Init these in case we can't query.
         self.status = {}
         self.params = {}
-        for param in ('led_mode', 'alarm_motion_armed', 'alarm_mail', 'alarm_motion_sensitivity', 'alarm_motion_compensation'):
+        for param in ('led_mode', 'alarm_motion_armed', 'alarm_mail', 'alarm_motion_sensitivity', 'alarm_motion_compensation', 'alarm_upload_interval'):
             if not param in self.params:
                 self.params[param] = 0
         # Call query to pull in the params before adding the motion node.

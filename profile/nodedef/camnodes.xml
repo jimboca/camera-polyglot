@@ -31,7 +31,7 @@
 
   <nodeDef id="FoscamMJPEG" nodeType="139" nls="CAM">
     <sts>
-      <!-- Seems to break Program Condition <st id="GV11" editor="FLOAT" /> -->
+      <st id="GV11" editor="FLOAT" />
       <st id="GV10" editor="I_AUTHM" />
       <st id="GV4" editor="BOOL" />
       <st id="GV5" editor="I_NLEDM" />
