@@ -1,6 +1,6 @@
 
 # Camera Server
-ND-CameraServer-NAME = Camera Server 0.7.1
+ND-CameraServer-NAME = Camera Server 0.7.2
 ND-CameraServer-ICON = Input
 ST-CAMS-GV1-NAME = Polyglot Node Version Major
 ST-CAMS-GV5-NAME = Polyglot Node Version Minor
