@@ -80,3 +80,116 @@ Install:
 # Debugging
 
 This node server creates a log file as Polyglot/config/camera-polyglot/camera.log, where 'camera' is what you called the node server in Polyglot.  If you have any issues, first review that file, and also look for Errors with 'grep ERROR camera.log'.
+
+# Programs
+
+Create programs on the ISY to monitor the Camera Server.
+
+1. First create a state variable s.Polyglot.CamServer, or whatever you want to call it.
+2. Create all the following programs
+
+   * I put them all in a subfolder:
+<pre>
+    ===========================================
+    Polyglot - [ID 025B][Parent 0001]
+
+    Folder Conditions for 'Polyglot'
+
+    If
+       - No Conditions - (To add one, press 'Schedule' or 'Condition')
+ 
+    Then
+       Allow the programs in this folder to run.
+</pre>
+
+   * Heartbeat Monitor
+<pre>
+    -------------------------------------------
+    CamS - [ID 025C][Parent 025B]
+
+    If
+        'Camera Server' is switched On
+ 
+    Then
+        $s.Polyglot.CamServer  = 1
+        Wait  5 minutes 
+        $s.Polyglot.CamServer  = 2
+ 
+    Else
+        $s.Polyglot.CamServer  = 2
+ 
+    Watch for CamS DON, wait 5 minutes and set error if not seen.
+</pre>
+
+  * Okay notification
+<pre>
+    -------------------------------------------
+    CamS Okay - [ID 0260][Parent 025B]
+
+    If
+        $s.Polyglot.CamServer is 1
+ 
+    Then
+        Send Notification to 'Pushover-P1' content 'Polyglot Status'
+ 
+    This will be sent when CamS status is changed from anything to 1.
+    Which means it will be sent when a problem is fixed, or ISY is starting up.
+</pre>
+
+   * Problem Notification
+<pre>
+    -------------------------------------------
+    CamS Problem - [ID 025D][Parent 025B]
+
+    If
+        $s.Polyglot.CamServer is 2
+ 
+    Then
+        Send Notification to 'Pushover-P1' content 'Polyglot Status'
+ 
+    CamS status 2 is a problem, send notification.
+</pre>
+
+   * Daily Problem reminder
+<pre>
+    -------------------------------------------
+    CamS Problem Reminder - [ID 025F][Parent 025B]
+
+    If
+        $s.Polyglot.CamServer is 2
+    And (
+             Time is  8:00:00AM
+          Or Time is  6:00:00PM
+        )
+ 
+    Then
+        Send Notification to 'Pushover-P1' content 'Polyglot Status'
+ 
+    CamS status 2 is a problem, send notification every day.
+</pre>
+
+   * Startup action
+<pre>
+    -------------------------------------------
+    CamS Startup - [ID 025E][Parent 025B]
+
+    If
+        $s.Polyglot.CamServer is 0
+ 
+    Then
+        Run Program 'CamS' (Then Path)
+ 
+    CamS init is zero, which only happens at startup, so start watching the CamS.
+</pre>
+
+3. Create a custom notification 'Polyglot Status':
+<pre>
+Subject: ISY: Polyglot Status
+Body:
+CameraServer Status: ${var.2.155}
+0: Not initialized
+1: Okay
+2: Not responding
+
+</pre>
+
