@@ -1,7 +1,8 @@
 
 # Camera Server
-ND-CameraServer-NAME = Camera Server
+ND-CameraServer-NAME = Camera Server 0.7.3
 ND-CameraServer-ICON = Input
+ST-CAMS-ST-NAME = Seconds since Epoch
 ST-CAMS-GV1-NAME = Polyglot Node Version Major
 ST-CAMS-GV5-NAME = Polyglot Node Version Minor
 ST-CAMS-GV2-NAME = Cameras
@@ -33,7 +34,6 @@ ND-FCAM1-ICON = Input
 
 # Camera Controls
 ST-CAM-GV1-NAME = Polyglot Node Version Major
-ST-CAM-GV12-NAME = Polyglot Node Version Minor
 ST-CAM-GV2-NAME = IP Address
 ST-CAM-GV3-NAME = Port
 ST-CAM-GV4-NAME = Responding
@@ -44,6 +44,8 @@ ST-CAM-GV8-NAME = Motion Sensitivity
 ST-CAM-GV9-NAME = Motion Compensation
 ST-CAM-GV10-NAME = Authorization Mode
 ST-CAM-GV11-NAME = Camera System Version
+ST-CAM-GV12-NAME = Polyglot Node Version Minor
+ST-CAM-GV13-NAME = Upload Interval
 
 CMD-ST-NAME = Query
 CMD-CAM-REBOOT-NAME = Reboot
@@ -55,6 +57,7 @@ CMD-CAM-SET_ALMOS-NAME = Set Alarm Motion Sensitivity
 CMD-CAM-SET_ALMOC-NAME = Set Alarm Motion Compensation
 CMD-CAM-SET_POS-NAME = Set Position
 CMD-CAM-SET_AUTHM-NAME = Set Authorization Mode
+CMD-CAM-SET_UPINT-NAME = Set Upload Interval
 
 #CMDP-CAM-BOOL-GV6-NAME = Armed
 #CMDP-CAM-BOOL-GV7-NAME = Send Email
@@ -124,5 +127,10 @@ AUTHM-1 = Digest
 ND-CamMotion-NAME = Camera Motion Sensor
 ND-CamMotion-ICON = Input
 
-ST-CAMNM-NAME = Motion
-CMD-CAMNM-ST-NAME = Motion
+# Try this one.
+ST-CAMNM-ST-NAME = Motion
+
+# Not these.
+#ST-CAMNM-NAME = Motion
+#CMD-CAMNM-ST-NAME = Motion
+#CMDP-CAMNM-ST-NAME = Motion

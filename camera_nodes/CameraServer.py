@@ -19,6 +19,7 @@ from foscam_poll import foscam_poll
 from camera_nodes import *
 from camera_funcs import myint,long2ip
 from camera_polyglot_version import VERSION_MAJOR,VERSION_MINOR
+import time
 
 class CameraServer(Node):
     """ Node that contains the Main Camera Server settings """
@@ -33,6 +34,7 @@ class CameraServer(Node):
         self.num_cams   = 0
         self.debug_mode = 10
         self.foscam_mjpeg = 1
+        self._next_beat_t = 0
         if address in manifest:
             drivers = manifest[address]['drivers']
             if 'GV4' in drivers:
@@ -56,6 +58,9 @@ class CameraServer(Node):
                             manifest=data, address=address)
                 self.num_cams += 1
         
+    def _st(self, **kwargs):
+        return self.set_driver('ST', time.time(), report=True)
+
     def query(self, **kwargs):
         """ Look for cameras """
         self.parent.logger.info("CameraServer:query:")
@@ -72,7 +77,7 @@ class CameraServer(Node):
         """ Look for more cameras """
         manifest = self.parent.config.get('manifest', {})
         if self.foscam_mjpeg > 0:
-            self._discover_foscam_m(manifest)
+            self._discover_foscam(manifest)
         else:
             self.parent.logger.info("CameraServer: Not Polling for Foscam MJPEG cameras %s" % (self.foscam_mjpeg))
             self.set_driver('GV2', self.num_cams, uom=56, report=True)
@@ -80,26 +85,36 @@ class CameraServer(Node):
         self.parent.update_config()
         return True
 
-    def _discover_foscam_m(self,manifest):
-        self.parent.logger.info("CameraServer:discover_foscam_m: Polling for Foscam MJPEG cameras %s" % (self.foscam_mjpeg))
+    def _discover_foscam(self,manifest):
+        self.parent.logger.info("CameraServer:discover_foscam: Polling for Foscam MJPEG cameras %s" % (self.foscam_mjpeg))
         cams = foscam_poll(self.parent.logger)
         self.parent.logger.info("CameraServer: Got cameras: " + str(cams))
         for cam in cams:
             cam['id'] = cam['id'].lower()
-            self.parent.logger.info("CameraServer:discover_foscam_m: Checking to add camera: %s %s" % (cam['id'], cam['name']))
+            self.parent.logger.info("CameraServer:discover_foscam: Checking to add camera: %s %s" % (cam['id'], cam['name']))
             lnode = self.parent.get_node(cam['id'])
             if not lnode:
-                self.parent.logger.info("CameraServer:discover_foscam_m: Adding camera: %s" % (cam['name']))
-                FoscamMJPEG(self.parent, True, self.parent.cam_config['user'], self.parent.cam_config['password'], udp_data=cam)
-                self.num_cams += 1
-                self.set_driver('GV2', self.num_cams, uom=56, report=True)
+                if cam['type'] == "":
+                    self.parent.logger.info("CameraServer:discover_foscam: Adding FoscamMJPEG camera: %s" % (cam['name']))
+                    FoscamMJPEG(self.parent, True, self.parent.cam_config['user'], self.parent.cam_config['password'], udp_data=cam)
+                    self.num_cams += 1
+                    self.set_driver('GV2', self.num_cams, uom=56, report=True)
+                elif cam['type'] == "A":
+                    self.parent.logger.info("CameraServer:discover_foscam: Adding FoscamHD camera: %s" % (cam['name']))
+                else:
+                    self.parent.logger.error("CameraServer:discover_foscam: Unknown type %s for Foscam Camera %s" % (cam['type'],cam['name']))
             else:
-                self.parent.logger.info("CameraServer:discover_foscam_m: Already exists: %s %s" % (cam['id'], cam['name']))
-            self.parent.logger.info("CameraServer:discover_foscam_m: Done")
+                self.parent.logger.info("CameraServer:discover_foscam: Already exists: %s %s" % (cam['id'], cam['name']))
+            self.parent.logger.info("CameraServer:discover_foscam: Done")
         
     def poll(self):
-        """ Poll Nothing  """
-        return
+        """ Poll Send DON every 60 seconds or so  """
+        now = time.time()
+        if now > self._next_beat_t:
+            self._next_beat_t = now + 60
+            self.set_driver('ST', now, report=True)
+            self.report_isycmd('DON')
+        return True
 
     def long_poll(self):
         """ Long Poll Nothing  """
@@ -134,6 +149,7 @@ class CameraServer(Node):
         return True
     
     _drivers = {
+        'ST':  [0, 56, int, False],        
         'GV1': [0, 56, float],
         'GV2': [0, 56, myint],
         'GV3': [0, 25, myint],
@@ -148,11 +164,17 @@ class CameraServer(Node):
     GV5:   float:   Version of this code (Major)
     """
     _commands = {
+        'ST': _st,
         'QUERY': query,
         'DISCOVER': discover,
         'SET_FOSCAM_MJPEG': _set_foscam_mjpeg,
         'SET_DM': _set_debug_mode,
     }
+
+    _sends = {
+        'DON': [None, None, None]
+    }
+    
     # The nodeDef id of this camers.
     node_def_id = 'CameraServer'
 
