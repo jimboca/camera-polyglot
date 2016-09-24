@@ -99,7 +99,7 @@ Create programs on the ISY to monitor the Camera Server.
 2. Create all the following programs
 
    * I put them all in a subfolder:
-<pre>
+```
     ===========================================
     Polyglot - [ID 025B][Parent 0001]
 
@@ -110,10 +110,10 @@ Create programs on the ISY to monitor the Camera Server.
  
     Then
        Allow the programs in this folder to run.
-</pre>
+```
 
    * Heartbeat Monitor
-<pre>
+```
     -------------------------------------------
     CamS - [ID 025C][Parent 025B]
 
@@ -129,10 +129,10 @@ Create programs on the ISY to monitor the Camera Server.
         $s.Polyglot.CamServer  = 2
  
     Watch for CamS DON, wait 5 minutes and set error if not seen.
-</pre>
+```
 
   * Okay notification
-<pre>
+```
     -------------------------------------------
     CamS Okay - [ID 0260][Parent 025B]
 
@@ -144,10 +144,10 @@ Create programs on the ISY to monitor the Camera Server.
  
     This will be sent when CamS status is changed from anything to 1.
     Which means it will be sent when a problem is fixed, or ISY is starting up.
-</pre>
+```
 
    * Problem Notification
-<pre>
+```
     -------------------------------------------
     CamS Problem - [ID 025D][Parent 025B]
 
@@ -158,10 +158,10 @@ Create programs on the ISY to monitor the Camera Server.
         Send Notification to 'Pushover-P1' content 'Polyglot Status'
  
     CamS status 2 is a problem, send notification.
-</pre>
+```
 
    * Daily Problem reminder
-<pre>
+```
     -------------------------------------------
     CamS Problem Reminder - [ID 025F][Parent 025B]
 
@@ -176,10 +176,10 @@ Create programs on the ISY to monitor the Camera Server.
         Send Notification to 'Pushover-P1' content 'Polyglot Status'
  
     CamS status 2 is a problem, send notification every day.
-</pre>
+```
 
    * Startup action
-<pre>
+```
     -------------------------------------------
     CamS Startup - [ID 025E][Parent 025B]
 
@@ -190,16 +190,15 @@ Create programs on the ISY to monitor the Camera Server.
         Run Program 'CamS' (Then Path)
  
     CamS init is zero, which only happens at startup, so start watching the CamS.
-</pre>
+```
 
 3. Create a custom notification 'Polyglot Status':
-<pre>
+```
 Subject: ISY: Polyglot Status
 Body:
 CameraServer Status: ${var.2.155}
 0: Not initialized
 1: Okay
 2: Not responding
-
-</pre>
+```
 
