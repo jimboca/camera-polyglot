@@ -28,8 +28,13 @@ CMD-DISCOVER-NAME = Discover
 
 # Camera Names
 ND-GCAM-NAME = Generic IP Camera
+
 ND-FoscamMJPEG-NAME = Foscam MJPEG Camera
 ND-FoscamMJPEG-ICON = Input
+ND-FCAM1-ICON = Input
+
+ND-FoscamHD2-NAME = Foscam HD2 Camera
+ND-FoscamHD2-ICON = Input
 ND-FCAM1-ICON = Input
 
 # Camera Controls
@@ -68,6 +73,32 @@ CMD-CAM-SET_UPINT-NAME = Set Upload Interval
 #CMDP-CAM-BOOL-GV9-NAME = Compensation
 #CMDP-CAM-
 
+# Camera Controls
+ST-FOSHD2-GV1-NAME = Polyglot Node Version Major
+ST-FOSHD2-GV2-NAME = IP Address
+ST-FOSHD2-GV3-NAME = Port
+ST-FOSHD2-GV4-NAME = Responding
+ST-FOSHD2-GV5-NAME = IR LED Mode
+ST-FOSHD2-GV6-NAME = Motion Detect Enable
+ST-FOSHD2-GV7-NAME = Motion Send Mail
+ST-FOSHD2-GV8-NAME = Motion Sensitivity
+ST-FOSHD2-GV9-NAME = Motion Compensation
+ST-FOSHD2-GV10-NAME = GV10 Not Used
+ST-FOSHD2-GV11-NAME = Camera System Version
+ST-FOSHD2-GV12-NAME = Polyglot Node Version Minor
+ST-FOSHD2-GV13-NAME = Motion Trigger Interval
+
+CMD-ST-NAME = Query
+CMD-FOSHD2-REBOOT-NAME = Reboot
+CMD-FOSHD2-SET_IRLED-NAME = Set IR LED Mode
+CMD-FOSHD2-SET_ALMOA-NAME = Set Motion Detect Enable
+CMD-FOSHD2-SET_ALML-NAME = Set Motion Send Mail
+CMD-FOSHD2-SET_ALMOS-NAME = Set Motion Sensitivity
+CMD-FOSHD2-SET_ALMOC-NAME = Set Motion Compensation
+CMD-FOSHD2-SET_POS-NAME = Set Position
+CMD-FOSHD2-SET_UPINT-NAME = Set Motion Trigger Interval
+
+
 POS-1 = Preset 1
 POS-2 = Preset 2
 POS-3 = Preset 3
@@ -96,9 +127,26 @@ ALMOS-7 = Sensitivity 7
 ALMOS-8 = Sensitivity 8
 ALMOS-9 = Sensitivity 9 (Lowest)
 
+MOS04-0 = Low
+MOS04-1 = Normal
+MOS04-2 = High
+MOS04-3 = Lower
+MOS04-4 = Lowest
+
 # Mode: Off, On
 MOO-0 = Off
 MOO-1 = On
+
+# Mode: Auto, Off, On, Unknown
+MAOOU-0 = Auto
+MAOOU-1 = Off
+MAOOU-2 = On
+MAOOU-3 = Unknown
+
+# Mode: Auto, Off, On
+MAOO-0 = Auto
+MAOO-1 = Off
+MAOO-2 = On
 
 # Status: Off, On, Unknown
 SOOU-0 = Off
@@ -118,6 +166,11 @@ MOOA-2 = Auto
 NLEDM-0 = Network Connection
 NLEDM-1 = Network Type
 NLEDM-2 = Off
+
+# -2 = off
+# -1 = auto
+
+IRLEDM-2
 
 # Authorization Mode
 AUTHM-0 = Basic

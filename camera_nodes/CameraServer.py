@@ -52,10 +52,16 @@ class CameraServer(Node):
             data = manifest[address]
             self.parent.logger.debug("CameraServer:add_manifest_cams: address=%s data=%s" % (address,data))
             if data['node_def_id'] == 'FoscamMJPEG':
-                # TODO: Don't pass drives, let FoscamMJPEG figure it out.
+                # TODO: Don't pass drivers, let FoscamMJPEG figure it out.
                 FoscamMJPEG(self.parent, True,
                             self.parent.cam_config['user'], self.parent.cam_config['password'],
                             manifest=data, address=address)
+                self.num_cams += 1
+            elif data['node_def_id'] == 'FoscamHD2':
+                # TODO: Don't pass drivers, let FoscamMJPEG figure it out.
+                FoscamHD2(self.parent, True,
+                          self.parent.cam_config['user'], self.parent.cam_config['password'],
+                          manifest=data, address=address)
                 self.num_cams += 1
         
     def _st(self, **kwargs):
@@ -94,13 +100,16 @@ class CameraServer(Node):
             self.parent.logger.info("CameraServer:discover_foscam: Checking to add camera: %s %s" % (cam['id'], cam['name']))
             lnode = self.parent.get_node(cam['id'])
             if not lnode:
-                if cam['type'] == "":
+                if cam['mtype'] == "MJPEG":
                     self.parent.logger.info("CameraServer:discover_foscam: Adding FoscamMJPEG camera: %s" % (cam['name']))
                     FoscamMJPEG(self.parent, True, self.parent.cam_config['user'], self.parent.cam_config['password'], udp_data=cam)
                     self.num_cams += 1
                     self.set_driver('GV2', self.num_cams, uom=56, report=True)
-                elif cam['type'] == "A":
+                elif cam['mtype'] == "HD2":
                     self.parent.logger.info("CameraServer:discover_foscam: Adding FoscamHD camera: %s" % (cam['name']))
+                    FoscamHD2(self.parent, True, self.parent.cam_config['user'], self.parent.cam_config['password'], udp_data=cam)
+                    self.num_cams += 1
+                    self.set_driver('GV2', self.num_cams, uom=56, report=True)
                 else:
                     self.parent.logger.error("CameraServer:discover_foscam: Unknown type %s for Foscam Camera %s" % (cam['type'],cam['name']))
             else:
@@ -113,7 +122,7 @@ class CameraServer(Node):
         if now > self._next_beat_t:
             self._next_beat_t = now + 60
             self.set_driver('ST', now, report=True)
-            self.report_isycmd('DON')
+            #self.report_isycmd('DON')
         return True
 
     def long_poll(self):

@@ -39,6 +39,7 @@ Install:
 1. Pull the camera-polyglot into Polyglot
   * `cd polyglot/config/node_servers`
   * `git clone https://github.com/jimboca/camera-polyglot.git`
+  * `git clone https://github.com/quatanium/foscam-python-lib.git`
   * `cd camera-polyglot`
   * `sudo pip install -r requirements.txt`
 2. From the polyglot web page: http://your.pi.ip:8080

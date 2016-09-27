@@ -121,6 +121,7 @@ class CameraNodeServer(SimpleNodeServer):
     
     def http_get(self,ip,port,user,password,path,payload,auth_mode=0):
         url = "http://{}:{}/{}".format(ip,port,path)
+        
         self.logger.debug("http_get: Sending: %s %s auth_mode=%d" % (url, payload, auth_mode) )
         if auth_mode == 0:
             auth = HTTPBasicAuth(user,password)
@@ -135,7 +136,7 @@ class CameraNodeServer(SimpleNodeServer):
                 url,
                 auth=auth,
                 params=payload,
-                timeout=10
+                timeout=5
             )
         # This is supposed to catch all request excpetions.
         except requests.exceptions.RequestException as e:
@@ -160,12 +161,15 @@ class CameraNodeServer(SimpleNodeServer):
 class EchoRequestHandler(SocketServer.BaseRequestHandler):
     
     def handle(self):
-        # Echo the back to the client
-        data = self.request.recv(1024)
-        # Don't worry about a status for now, just echo back.
-        self.request.sendall(data)
-        # Then parse it.
-        myhandler(data)
+        try:
+            # Echo the back to the client
+            data = self.request.recv(1024)
+            # Don't worry about a status for now, just echo back.
+            self.request.sendall(data)
+            # Then parse it.
+            myhandler(data)
+        except:
+            _SERVER.poly.send_error("echo_request_handler failed")
         return
 
 def get_network_ip(rhost):
