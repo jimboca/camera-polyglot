@@ -3,13 +3,11 @@
 #
 
 import os,sys
-sys.path.insert(0,"/home/pi/development/foscam-python-lib")
 from polyglot.nodeserver_api import Node
 from Motion import Motion
 from functools import partial
 from camera_funcs import myint,myfloat,ip2long,long2ip,isBitI,setBit,clearBit
 from camera_polyglot_version import VERSION_MAJOR,VERSION_MINOR
-from foscam import FoscamCamera
 import xml.etree.ElementTree as ET
 
 #linkage Motion alarm linkage
