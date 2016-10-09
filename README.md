@@ -6,8 +6,8 @@ MIT license.
 
 This node server is intended to support any type of camera.  Currently the following are supported:
 
-1.Foscam MJPEG
-  This is any Foscam Camera MJPEG camera.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
+1. Foscam MJPEG
+  This is any Foscam Camera MJPEG camera.  This should be any camera that uses this interface  [Foscam IP Camera CGI](docs/ipcam_cgi_sdk.pdf) which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
   * See README_foscam.md for more information
   * All the params are documented in the pdf mentioned above, if you have questions about them, please read that document first.
   * The 'IR LED' only has a set option, and does not display the status because it seems there is no way to get the status of this from the camera that I can find.  If you know how, please tell me!
@@ -16,15 +16,15 @@ This node server is intended to support any type of camera.  Currently the follo
     * led_mode=1 : LED indicates connected network type 
     * led_mode=2 : LED deactivated except during camera boot
 
-2. Foscam HD
-   Suitable for all cameras using the CGIProxy.fcgi interface
-   * ftp://109.108.88.53/Nadzor/FOSCAM/SDK%20CGI/HD%20cameras%20SDK%20CGI/Foscam%20IPCamera%20CGI%20User%20Guide-V1.0.4.pdf
-   * Example: http://192.168.1.2/cgi-bin/CGIProxy.fcgi&usr=admin&pwd=123&cmd=ABC
+2. FoscamHD2 (H.264)
+   Any Camera that uses the interface [Foscam IPCamera CGI User Guide](docs/Foscam%20IPCamera%20CGI%20User%20Guide-V1.0.4.pdf)
    
-3. Foscam H.264
-   Currently not supported, but could be added:
-    * ftp://109.108.88.53/Nadzor/FOSCAM/SDK%20CGI/H.264%20CGI%20SDK/H.264%20CGI%20SDK/FC%20IP%20Camera%20CGI%20User%20Manual.pdf
-    * Example: http://192.168.1.88/cgi-bin/hi3510/param.cgi?cmd=getvencattr&-chn=11 
+   Tested with:
+   
+   Camera Model | System Version
+   ------------ | --------------
+   FI9828P V2   | 1.4.1.10
+   FI9826P V2   | 1.5.3.19
 
 # Requirements
 

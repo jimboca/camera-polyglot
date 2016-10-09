@@ -89,6 +89,71 @@
     </cmds>
   </nodeDef>
 
+  <!-- === Foscam H.264 Camera ============================================================  -->
+
+  <nodeDef id="FoscamHD2" nodeType="139" nls="FOSHD2">
+    <sts>
+      <st id="GV11" editor="FLOAT" />     <!-- Camera System Version -->
+      <st id="GV4" editor="BOOL" />       <!-- Responding -->
+      <st id="GV5" editor="I_MAOOU" />    <!-- IR LED Mode -->
+      <st id="GV6" editor="BOOL" />       <!-- Alarm Motion Armed -->
+      <st id="GV10" editor="I_MOT10" />   <!-- Alarm Motion Trigger Interval -->
+      <st id="GV16" editor="BOOL" />       <!-- Motion Ring -->
+      <st id="GV7" editor="BOOL" />       <!-- Motion Send Mail -->
+      <st id="GV14" editor="BOOL" />      <!-- Motion Picture -->
+      <st id="GV13" editor="I_MOP5" />    <!-- Motion Snap Interval -->
+      <st id="GV15" editor="BOOL" />      <!-- Motion Record -->
+      <st id="GV8" editor="I_MOS04" />    <!-- Motion Sensitivity -->
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<!--  The IR LED -->
+        <cmd id="SET_IRLED">
+          <p id="" editor="I_MAOO" init="GV5"/>
+        </cmd>
+	<!--  Enable motion alarm -->
+        <cmd id="SET_ALMOA">
+          <p id="" editor="BOOL" init="GV6" />
+        </cmd>
+	<!--  Trigger Interval -->
+        <cmd id="SET_MO_TRIG">
+          <p id="" editor="I_MOT10" init="GV10" />
+        </cmd>
+	<!-- Motion Sensitivity: 0-9：high-low (but I think it is low-high) -->
+        <cmd id="SET_ALMOS">
+          <p id="" editor="I_MOS04" init="GV8" />
+        </cmd>
+	<!--  ring for motion alarm -->
+        <cmd id="SET_MO_RING">
+          <p id="" editor="BOOL" init="GV16" />
+        </cmd>
+	<!--  Send email for motion alarm -->
+        <cmd id="SET_MO_MAIL">
+          <p id="" editor="BOOL" init="GV7" />
+        </cmd>
+	<!--  Send picture for motion alarm -->
+        <cmd id="SET_MO_PIC">
+          <p id="" editor="BOOL" init="GV14" />
+        </cmd>
+	<!--  Send picture for motion alarm snap interval-->
+        <cmd id="SET_MO_PIC_INT">
+          <p id="" editor="I_MOP5" init="GV13" />
+        </cmd>
+	<!--  Enable record for motion alarm -->
+        <cmd id="SET_MO_REC">
+          <p id="" editor="BOOL" init="GV15" />
+        </cmd>
+	<!-- Set camera position to one of 16 presets -->
+        <cmd id="SET_POS">
+          <p id="" editor="I_POS16" />
+        </cmd>
+	<cmd id="REBOOT" />
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
   <!-- === Camera Motion Node ============================================================  -->
   <nodeDef id="CamMotion" nodeType="139" nls="CAMNM">
     <sts>

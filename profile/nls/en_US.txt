@@ -1,6 +1,6 @@
 
 # Camera Server
-ND-CameraServer-NAME = Camera Server 0.7.3
+ND-CameraServer-NAME = Camera Server 0.8.0
 ND-CameraServer-ICON = Input
 ST-CAMS-ST-NAME = Seconds since Epoch
 ST-CAMS-GV1-NAME = Polyglot Node Version Major
@@ -28,8 +28,13 @@ CMD-DISCOVER-NAME = Discover
 
 # Camera Names
 ND-GCAM-NAME = Generic IP Camera
+
 ND-FoscamMJPEG-NAME = Foscam MJPEG Camera
 ND-FoscamMJPEG-ICON = Input
+ND-FCAM1-ICON = Input
+
+ND-FoscamHD2-NAME = Foscam HD2 Camera
+ND-FoscamHD2-ICON = Input
 ND-FCAM1-ICON = Input
 
 # Camera Controls
@@ -68,6 +73,39 @@ CMD-CAM-SET_UPINT-NAME = Set Upload Interval
 #CMDP-CAM-BOOL-GV9-NAME = Compensation
 #CMDP-CAM-
 
+# Camera Controls
+ST-FOSHD2-GV1-NAME = Polyglot Node Version Major
+ST-FOSHD2-GV2-NAME = IP Address
+ST-FOSHD2-GV3-NAME = Port
+ST-FOSHD2-GV4-NAME = Responding
+ST-FOSHD2-GV5-NAME = IR LED Mode
+ST-FOSHD2-GV6-NAME = Motion Detect Enable
+ST-FOSHD2-GV7-NAME = Motion Send Mail
+ST-FOSHD2-GV8-NAME = Motion Sensitivity
+ST-FOSHD2-GV9-NAME = Motion Compensation
+ST-FOSHD2-GV10-NAME = Motion Trigger Interval
+ST-FOSHD2-GV11-NAME = Camera System Version
+ST-FOSHD2-GV12-NAME = Polyglot Node Version Minor
+ST-FOSHD2-GV13-NAME = Motion Snapshot Interval
+ST-FOSHD2-GV14-NAME = Motion Snap Picture
+ST-FOSHD2-GV15-NAME = Motion Record
+ST-FOSHD2-GV16-NAME = Motion Ring
+
+CMD-ST-NAME = Query
+CMD-FOSHD2-REBOOT-NAME = Reboot
+CMD-FOSHD2-SET_IRLED-NAME = Set IR LED Mode
+CMD-FOSHD2-SET_ALMOA-NAME = Set Motion Detect Enable
+CMD-FOSHD2-SET_MO_MAIL-NAME = Set Motion Send Mail
+CMD-FOSHD2-SET_ALMOS-NAME = Set Motion Sensitivity
+CMD-FOSHD2-SET_ALMOC-NAME = Set Motion Compensation
+CMD-FOSHD2-SET_POS-NAME = Set Position
+CMD-FOSHD2-SET_MO_TRIG-NAME = Set Motion Trigger Interval
+CMD-FOSHD2-SET_MO_RING-NAME = Set Motion Ring
+CMD-FOSHD2-SET_MO_PIC-NAME = Set Motion Snap Picture
+CMD-FOSHD2-SET_MO_PIC_INT-NAME = Set Motion Snap Picture Interval
+CMD-FOSHD2-SET_MO_REC-NAME = Set Motion Record
+
+
 POS-1 = Preset 1
 POS-2 = Preset 2
 POS-3 = Preset 3
@@ -96,9 +134,46 @@ ALMOS-7 = Sensitivity 7
 ALMOS-8 = Sensitivity 8
 ALMOS-9 = Sensitivity 9 (Lowest)
 
+MOS04-0 = Low
+MOS04-1 = Medium
+MOS04-2 = High
+MOS04-3 = Lower
+MOS04-4 = Lowest
+
+# Motion snap interval
+MOP5-1 = 1s
+MOP5-2 = 2s
+MOP5-3 = 3s
+MOP5-4 = 4s
+MOP5-5 = 5s
+
+# Motion trigger interval
+MOT10-0 = 5s
+MOT10-1 = 6s
+MOT10-2 = 7s
+MOT10-3 = 8s
+MOT10-4 = 9s
+MOT10-5 = 10s
+MOT10-6 = 11s
+MOT10-7 = 12s
+MOT10-8 = 13s
+MOT10-9 = 14s
+MOT10-10 = 15s
+
 # Mode: Off, On
 MOO-0 = Off
 MOO-1 = On
+
+# Mode: Auto, Off, On, Unknown
+MAOOU-0 = Auto
+MAOOU-1 = Off
+MAOOU-2 = On
+MAOOU-3 = Unknown
+
+# Mode: Auto, Off, On
+MAOO-0 = Auto
+MAOO-1 = Off
+MAOO-2 = On
 
 # Status: Off, On, Unknown
 SOOU-0 = Off
@@ -118,6 +193,11 @@ MOOA-2 = Auto
 NLEDM-0 = Network Connection
 NLEDM-1 = Network Type
 NLEDM-2 = Off
+
+# -2 = off
+# -1 = auto
+
+IRLEDM-2
 
 # Authorization Mode
 AUTHM-0 = Basic
