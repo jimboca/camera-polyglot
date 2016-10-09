@@ -7,7 +7,7 @@ MIT license.
 This node server is intended to support any type of camera.  Currently the following are supported:
 
 1. Foscam MJPEG
-  This is any Foscam Camera MJPEG camera.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
+  This is any Foscam Camera MJPEG camera.  This should be any camera that uses this interface  [Foscam IPCamera CGI User Guide](docs/ipcam_cgi_sdk.pdf) which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
   * See README_foscam.md for more information
   * All the params are documented in the pdf mentioned above, if you have questions about them, please read that document first.
   * The 'IR LED' only has a set option, and does not display the status because it seems there is no way to get the status of this from the camera that I can find.  If you know how, please tell me!
