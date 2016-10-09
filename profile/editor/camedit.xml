@@ -66,6 +66,16 @@
         <range uom="25" subset="0-4" nls="MOS04" />
     </editor>
 
+    <!-- 0-10 Trigger Interval  -->
+    <editor id="I_MOT10">
+        <range uom="25" subset="0-10" nls="MOT10" />
+    </editor>
+
+    <!-- 1-5 Snap Interval  -->
+    <editor id="I_MOP5">
+        <range uom="25" subset="1-5" nls="MOP5" />
+    </editor>
+
     <!-- 0-4 Foscam polling mode -->
     <editor id="I_FOSCAM_MJPEG">
         <range uom="25" subset="0-4" nls="CFMJPEG" />

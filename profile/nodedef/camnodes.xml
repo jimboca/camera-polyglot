@@ -93,14 +93,17 @@
 
   <nodeDef id="FoscamHD2" nodeType="139" nls="FOSHD2">
     <sts>
-      <st id="GV11" editor="FLOAT" />
-      <st id="GV4" editor="BOOL" />
-      <st id="GV5" editor="I_MAOOU" />
-      <st id="GV6" editor="BOOL" />
-      <st id="GV7" editor="BOOL" />
-      <st id="GV13" editor="I_INTEGER" />
-      <st id="GV9" editor="BOOL" />
-      <st id="GV8" editor="I_MOS04" />
+      <st id="GV11" editor="FLOAT" />     <!-- Camera System Version -->
+      <st id="GV4" editor="BOOL" />       <!-- Responding -->
+      <st id="GV5" editor="I_MAOOU" />    <!-- IR LED Mode -->
+      <st id="GV6" editor="BOOL" />       <!-- Alarm Motion Armed -->
+      <st id="GV10" editor="I_MOT10" />   <!-- Alarm Motion Trigger Interval -->
+      <st id="GV16" editor="BOOL" />       <!-- Motion Ring -->
+      <st id="GV7" editor="BOOL" />       <!-- Motion Send Mail -->
+      <st id="GV14" editor="BOOL" />      <!-- Motion Picture -->
+      <st id="GV13" editor="I_MOP5" />    <!-- Motion Snap Interval -->
+      <st id="GV15" editor="BOOL" />      <!-- Motion Record -->
+      <st id="GV8" editor="I_MOS04" />    <!-- Motion Sensitivity -->
     </sts>
     <cmds>
       <sends />
@@ -113,21 +116,33 @@
         <cmd id="SET_ALMOA">
           <p id="" editor="BOOL" init="GV6" />
         </cmd>
-	<!--  Send email for motion alarm -->
-        <cmd id="SET_ALML">
-          <p id="" editor="BOOL" init="GV7" />
-        </cmd>
-	<!--  Upload Interval -->
-        <cmd id="SET_UPINT">
-          <p id="" editor="I_INTEGER" init="GV13" />
-        </cmd>
-	<!-- Enable alarm motion compensation or not when the light changes suddently，0：no，1：yes  -->
-        <cmd id="SET_ALMOC">
-          <p id="" editor="BOOL" init="GV9" />
+	<!--  Trigger Interval -->
+        <cmd id="SET_MO_TRIG">
+          <p id="" editor="I_MOT10" init="GV10" />
         </cmd>
 	<!-- Motion Sensitivity: 0-9：high-low (but I think it is low-high) -->
         <cmd id="SET_ALMOS">
           <p id="" editor="I_MOS04" init="GV8" />
+        </cmd>
+	<!--  ring for motion alarm -->
+        <cmd id="SET_MO_RING">
+          <p id="" editor="BOOL" init="GV16" />
+        </cmd>
+	<!--  Send email for motion alarm -->
+        <cmd id="SET_MO_MAIL">
+          <p id="" editor="BOOL" init="GV7" />
+        </cmd>
+	<!--  Send picture for motion alarm -->
+        <cmd id="SET_MO_PIC">
+          <p id="" editor="BOOL" init="GV14" />
+        </cmd>
+	<!--  Send picture for motion alarm snap interval-->
+        <cmd id="SET_MO_PIC_INT">
+          <p id="" editor="I_MOP5" init="GV13" />
+        </cmd>
+	<!--  Enable record for motion alarm -->
+        <cmd id="SET_MO_REC">
+          <p id="" editor="BOOL" init="GV15" />
         </cmd>
 	<!-- Set camera position to one of 16 presets -->
         <cmd id="SET_POS">
