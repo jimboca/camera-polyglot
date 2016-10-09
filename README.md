@@ -18,7 +18,9 @@ This node server is intended to support any type of camera.  Currently the follo
 
 2. FoscamHD2 (H.264)
    Any Camera that uses the interface [Foscam IPCamera CGI User Guide](docs/Foscam%20IPCamera%20CGI%20User%20Guide-V1.0.4.pdf)
+   
    Tested with:
+   
    Camera Model | System Version
    ------------ | --------------
    FI9828P V2   | 1.4.1.10
