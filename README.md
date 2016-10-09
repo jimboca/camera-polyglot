@@ -6,8 +6,8 @@ MIT license.
 
 This node server is intended to support any type of camera.  Currently the following are supported:
 
-1.Foscam MJPEG
-  This is any Foscam Camera MJPEG camera.  This should be any camera that uses this interface http://www.foscam.es/descarga/ipcam_cgi_sdk.pdf which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
+1. Foscam MJPEG
+  This is any Foscam Camera MJPEG camera.  This should be any camera that uses this interface  [Foscam IP Camera CGI](docs/ipcam_cgi_sdk.pdf) which includes the non-HD Smarthome INSTEON cameras that are rebranded Foscam's.
   * See README_foscam.md for more information
   * All the params are documented in the pdf mentioned above, if you have questions about them, please read that document first.
   * The 'IR LED' only has a set option, and does not display the status because it seems there is no way to get the status of this from the camera that I can find.  If you know how, please tell me!
@@ -17,9 +17,11 @@ This node server is intended to support any type of camera.  Currently the follo
     * led_mode=2 : LED deactivated except during camera boot
 
 2. FoscamHD2 (H.264)
-   Any Camera that uses the interface [[Foscam IPCamera CGI User Guide][docs/Foscam%20IPCamera%20CGI%20User%20Guide-V1.0.4.pdf]]
+   Any Camera that uses the interface [Foscam IPCamera CGI User Guide](docs/Foscam%20IPCamera%20CGI%20User%20Guide-V1.0.4.pdf)
    To use the Goto preset control you must defined presets named "1", "2", "3", ... on the camera.  I would like to support using the preset names defined on the camera but that would require creating the profile.zip on the fly which is possible, but hasn't been done yet.
+
    Tested with:
+   
    Camera Model | System Version
    ------------ | --------------
    FI9828P V2   | 1.4.1.10
