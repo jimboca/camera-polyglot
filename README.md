@@ -18,7 +18,8 @@ This node server is intended to support any type of camera.  Currently the follo
 
 2. FoscamHD2 (H.264)
    Any Camera that uses the interface [Foscam IPCamera CGI User Guide](docs/Foscam%20IPCamera%20CGI%20User%20Guide-V1.0.4.pdf)
-   
+   To use the Goto preset control you must defined presets named "1", "2", "3", ... on the camera.  I would like to support using the preset names defined on the camera but that would require creating the profile.zip on the fly which is possible, but hasn't been done yet.
+
    Tested with:
    
    Camera Model | System Version
