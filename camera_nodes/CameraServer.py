@@ -99,7 +99,10 @@ class CameraServer(Node):
             cam['id'] = cam['id'].lower()
             self.parent.logger.info("CameraServer:discover_foscam: Checking to add camera: %s %s" % (cam['id'], cam['name']))
             lnode = self.parent.get_node(cam['id'])
-            if not lnode:
+            if lnode:
+                self.parent.logger.info("CameraServer:discover_foscam: Already exists, updating %s %s" % (cam['id'], cam['name']))
+                lnode.update_config(self.parent.cam_config['user'], self.parent.cam_config['password'], udp_data=cam)
+            else:
                 if cam['mtype'] == "MJPEG":
                     self.parent.logger.info("CameraServer:discover_foscam: Adding FoscamMJPEG camera: %s" % (cam['name']))
                     FoscamMJPEG(self.parent, True, self.parent.cam_config['user'], self.parent.cam_config['password'], udp_data=cam)
@@ -112,8 +115,6 @@ class CameraServer(Node):
                     self.set_driver('GV2', self.num_cams, uom=56, report=True)
                 else:
                     self.parent.logger.error("CameraServer:discover_foscam: Unknown type %s for Foscam Camera %s" % (cam['type'],cam['name']))
-            else:
-                self.parent.logger.info("CameraServer:discover_foscam: Already exists: %s %s" % (cam['id'], cam['name']))
             self.parent.logger.info("CameraServer:discover_foscam: Done")
         
     def poll(self):
