@@ -123,7 +123,7 @@ class CameraServer(Node):
         if now > self._next_beat_t:
             self._next_beat_t = now + 60
             self.set_driver('ST', now, report=True)
-            #self.report_isycmd('DON')
+            self.report_isycmd('DON')
         return True
 
     def long_poll(self):
