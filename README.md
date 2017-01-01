@@ -196,18 +196,19 @@ CameraServer Status: ${var.2.155}
 
 # Release Notes:
 
-Release:  0.9.0:
+## 0.9.0:
    - Discover will update IP address of existing cameras.
    - Add support back for sending DON every minute to use for monitor.  https://github.com/jimboca/camera-polyglot/blob/master/README.md#programs
-Release:  0.8.1:
+##  0.8.1:
    - Remove reference to python foscam library which is not used
    - Added comments about preset names in README.
-Release:  0.8.0:
+##  0.8.0:
    - Added support for Foscam H.264 Cameras
    - Removed sending of DON every minute, until latest Polyglot development version is released.
    - Must upload new profile
-Release:  0.7.3:
+## 0.7.3:
    - Needs polyglot development version, upgraded at your own risk.
    - Fix crash on startup if camera is not responding
    - Sends DON every minute to use for monitor.  https://github.com/jimboca/camera-polyglot/blob/master/README.md#programs
-Release: 0.2 (beta) of the Polyglot Camera NodeServer 
+## 0.2
+   (beta) of the Polyglot Camera NodeServer 
