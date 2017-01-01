@@ -196,6 +196,9 @@ CameraServer Status: ${var.2.155}
 
 # Release Notes:
 
+Release:  0.9.0:
+   - Discover will update IP address of existing cameras.
+   - Add support back for sending DON every minute to use for monitor.  https://github.com/jimboca/camera-polyglot/blob/master/README.md#programs
 Release:  0.8.1:
    - Remove reference to python foscam library which is not used
    - Added comments about preset names in README.
