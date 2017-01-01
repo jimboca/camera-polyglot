@@ -91,6 +91,23 @@ class FoscamMJPEG(Node):
         self.query();
         self.parent.logger.info("FoscamMJPEG:init: Added camera at %s:%s '%s' %s" % (self.ip,self.port,self.name,self.address))
 
+    def update_config(self, user, password, udp_data=None):
+        self.parent.logger.info("FoscamMJPEG:update_config: upd_data=%s" % (udp_data))
+        self.user        = user
+        self.password    = password
+        if udp_data is not None:
+            self.name      = udp_data['name']
+            self.auth_mode = self._get_auth_mode(udp_data['sys'])
+            self.ip        = udp_data['ip']
+            self.port      = udp_data['port']
+            self.sys_ver   = self._parse_sys_ver(udp_data['sys'])
+            self.full_sys_ver = str(udp_data['sys'])
+        self.set_driver('GV2',  ip2long(self.ip), uom=56, report=False)
+        self.set_driver('GV3',  self.port, uom=56, report=False)
+        self.set_driver('GV10', self.auth_mode, uom=25, report=False)
+        self.set_driver('GV11', self.sys_ver, uom=56, report=False)
+        self.query()
+        
     def query(self, **kwargs):
         """ query the camera """
         # pylint: disable=unused-argument
