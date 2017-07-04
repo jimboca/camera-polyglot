@@ -28,6 +28,9 @@ class CameraServer(Node):
         self.parent   = parent
         self.address  = address
         self.name     = name
+        # Polyglot long/short poll time defaults come from parent.
+        self.shortpoll = parent.shortpoll
+        self.longpoll  = parent.longpoll
         self.http_get = parent.http_get
         self.parent.logger.info("CameraServer:init: address=%s, name='%s'" % (self.address, self.name))
         # Number of Cameras we are managing
@@ -41,6 +44,10 @@ class CameraServer(Node):
                 self.debug_mode = drivers['GV4']
             if 'GV3' in drivers:
                 self.foscam_mjpeg = drivers['GV3']
+            if 'GV6' in drivers:
+                self.shortpoll = drivers['GV6']
+            if 'GV7' in drivers:
+                self.longpoll = drivers['GV7']
         super(CameraServer, self).__init__(parent, self.address, self.name, True, manifest)
         self._add_manifest_cams(manifest)
         self.query();
@@ -120,8 +127,8 @@ class CameraServer(Node):
     def poll(self):
         """ Poll Send DON every 60 seconds or so  """
         now = time.time()
+        self._next_beat_t = now + 60
         if now > self._next_beat_t:
-            self._next_beat_t = now + 60
             self.set_driver('ST', now, report=True)
             self.report_isycmd('DON')
         return True
@@ -130,6 +137,20 @@ class CameraServer(Node):
         """ Long Poll Nothing  """
         return
 
+    def _set_shortpoll(self, value):
+        self.shortpoll = value
+        self.parent.shortpoll = self.shortpoll
+        self.parent.logger.info("CameraServer:_set_short_poll: %d" % (self.shortpoll))
+        self.set_driver('GV6', self.shortpoll, uom=25, report=True)
+        return True
+    
+    def _set_longpoll(self, value):
+        self.longpoll = value
+        self.parent.longpoll = self.longpoll
+        self.parent.logger.info("CameraServer:_set_long_poll: %d" % (self.longpoll))
+        self.set_driver('GV7', self.longpoll, uom=25, report=True)
+        return True
+    
     def _set_foscam_mjpeg(self, **kwargs):
         """ Enable/Disable Foscam MJPEG UDP Searching
               0 = Off
@@ -158,6 +179,12 @@ class CameraServer(Node):
         self.logger.setLevel(self.debug_mode)
         return True
     
+    def _cmd_set_shortpoll(self, **kwargs):
+        return self._set_shortpoll(myint(kwargs.get("value")))
+        
+    def _cmd_set_longpoll(self, **kwargs):
+        return self._set_longpoll(myint(kwargs.get("value")))
+        
     _drivers = {
         'ST':  [0, 56, int, False],        
         'GV1': [0, 56, float],
@@ -165,6 +192,8 @@ class CameraServer(Node):
         'GV3': [0, 25, myint],
         'GV4': [0, 25, myint],
         'GV5': [0, 56, float],
+        'GV6': [0, 25, myint],
+        'GV7': [0, 25, myint],
     }
     """ Driver Details:
     GV1:   float:   Version of this code (Major)
@@ -172,6 +201,8 @@ class CameraServer(Node):
     GV3: integer: foscam Polling
     GV4: integer: Log Mode
     GV5:   float:   Version of this code (Major)
+    GV6: integer: shortpoll
+    GV7: integer: longpoll
     """
     _commands = {
         'ST': _st,
@@ -179,6 +210,8 @@ class CameraServer(Node):
         'DISCOVER': discover,
         'SET_FOSCAM_MJPEG': _set_foscam_mjpeg,
         'SET_DM': _set_debug_mode,
+        'SET_SHORTPOLL': _cmd_set_shortpoll,
+        'SET_LONGPOLL':  _cmd_set_longpoll
     }
 
     _sends = {

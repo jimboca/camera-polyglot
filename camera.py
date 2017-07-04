@@ -205,7 +205,7 @@ def myhandler(data):
 def main():
     """ setup connection, node server, and nodes """
     poly = PolyglotConnector()
-    nserver = CameraNodeServer(poly)
+    nserver = CameraNodeServer(poly, shortpoll=30, longpoll=300)
     poly.connect()
     poly.wait_for_config()
     nserver.setup()

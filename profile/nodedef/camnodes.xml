@@ -10,6 +10,10 @@
       <st id="GV2" editor="I_INTEGER" />
       <st id="GV3" editor="I_FOSCAM_MJPEG" />
       <st id="GV4" editor="I_DM" />
+      <!-- shortpoll -->
+      <st id="GV6" editor="I_INTEGER" />
+      <!-- longpoll -->
+      <st id="GV7" editor="I_INTEGER" />
     </sts>
     <cmds>
       <sends>
@@ -25,6 +29,12 @@
 	<!--  Log Debug Mode -->
         <cmd id="SET_DM">
           <p id="" editor="I_DM" init="GV4"/>
+        </cmd>
+        <cmd id="SET_SHORTPOLL">
+          <p id="" editor="I_INTEGER" init="GV6"/>
+        </cmd>
+        <cmd id="SET_LONGPOLL">
+          <p id="" editor="I_INTEGER" init="GV7"/>
         </cmd>
       </accepts>
     </cmds>

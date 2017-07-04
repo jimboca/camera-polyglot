@@ -62,6 +62,8 @@ class FoscamHD2(Node):
         # Add the Camera
         self.parent.logger.info("FoscamHD2:init: Adding %s %s" % (self.name,self.address))
         super(FoscamHD2, self).__init__(parent, self.address, self.name, primary, manifest)
+        # This tracks if _set_motion_params was successful
+        self.set_motion_params_st = True
         # Initialize things that don't change.
         self.set_driver('GV1',  VERSION_MAJOR, uom=56, report=False)
         self.set_driver('GV12', VERSION_MINOR, uom=56, report=False)
@@ -109,13 +111,16 @@ class FoscamHD2(Node):
     def poll(self):
         """ Nothing to poll?  """
         #response = os.system("ping -c 1 -w2 " + self.ip + " > /dev/null 2>&1")
+        # Fix the motion params if it failed the last time.
+        if not self.set_motion_params_st:
+            self._set_motion_params()
         return
 
     def long_poll(self):
         self.parent.logger.info("FoscamHD2:long_poll:%s:" % (self.name))
         # get_status handles properly setting self.connected and the driver
         # so just call it.
-        #self._get_status()
+        self._get_status()
     
     def _parse_sys_ver(self,sys_ver):
         """ 
@@ -203,8 +208,7 @@ class FoscamHD2(Node):
         Calls http get, parses the keys and stores them in status dict
         """
         rc, data = self._http_get_and_parse(cmd)
-        if rc == 0:
-            self._save_keys(pfx,rc,data)
+        self._save_keys(pfx,rc,data)
         return rc
 
     # **********************************************************************
@@ -280,22 +284,15 @@ class FoscamHD2(Node):
             self.set_driver('GV16', isBitI(sl,linkage_bits['ring']), uom=2, report=report)
         return st
 
-    def _get_cam_all(self,report=True):
-        """ 
-        Call get_status on the camera and store in status
-        """
-        # Can't spit out the device name cause we might not know it yet.
-        self.parent.logger.info("FoscamHD2:_get_cam_all: %s:%s" % (self.ip,self.port))
+    def _get_status(self):
+        self.parent.logger.info("FoscamHD2:_get_status: %s:%s" % (self.ip,self.port))
         # Get the led_mode since that is the simplest return status
-        rc = self._get_cam_irled()
-        self.parent.logger.info("FoscamHD2:_get_cam_all: rc=%d" % (rc))
+        rc = self._get_cam_irled(report=True)
+        self.parent.logger.info("FoscamHD2:_get_status: rc=%d" % (rc))
         if rc == 0:
             connected = 1
-            self._get_cam_dev_state(report=False)
-            self._get_cam_dev_info(report=False)
-            self._get_cam_motion_detect_config(report=False)
         else:
-            self.parent.send_error("FoscamHD2:_get_all_params:%s: Failed to get_status: %d" % (self.name,rc))
+            self.parent.send_error("FoscamHD2:_get_status:%s: Failed to get_status: %d" % (self.name,rc))
             # inform the motion node there is an issue if we have a motion node
             #if hasattr(self,'motion'):
             #    self.motion.motion(2)
@@ -305,7 +302,17 @@ class FoscamHD2(Node):
             connected = 0
         if connected != self.connected:
             self.connected = connected
-            self.set_driver('GV4', self.connected, uom=2, report=False)
+            self.set_driver('GV4', self.connected, uom=2, report=True)
+        
+    def _get_cam_all(self,report=True):
+        """ 
+        Call get_status on the camera and store in status
+        """
+        self._get_status()
+        if self.connected == 1:
+            self._get_cam_dev_state(report=False)
+            self._get_cam_dev_info(report=False)
+            self._get_cam_motion_detect_config(report=False)
         self.report_driver()
             
 
@@ -353,7 +360,8 @@ class FoscamHD2(Node):
         because if one is not passed it reverts to the default... dumb foscam api ...
         """
         self.parent.logger.info("FoscamMJPEG:set_motion_params:%s:" % (self.name))
-        return self._http_get("setMotionDetectConfig",self.status['motion_detect'])
+        self.set_motion_params_st = self._http_get("setMotionDetectConfig",self.status['motion_detect'])
+        return self.set_motion_params_st
 
     def _set_motion_param(self, driver=None, param=None, **kwargs):
         value = kwargs.get("value")

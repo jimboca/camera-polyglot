@@ -8,6 +8,8 @@ ST-CAMS-GV5-NAME = Polyglot Node Version Minor
 ST-CAMS-GV2-NAME = Cameras
 ST-CAMS-GV3-NAME = Foscam MJPEG Search
 ST-CAMS-GV4-NAME = Debug Mode
+ST-CAMS-GV6-NAME = Short Poll
+ST-CAMS-GV7-NAME = Long Poll
 
 CMD-SET_FOSCAM_MJPEG-NAME = Foscam MJPEG Search
 CFMJPEG-0 = Off
@@ -23,6 +25,9 @@ CDM-20 = Info
 CDM-30 = Warning
 CDM-40 = Error
 CDM-50 = Critical
+
+CMD-SET_SHORTPOLL-NAME = Short Poll
+CMD-SET_LONGPOLL-NAME = Long Poll
 
 CMD-DISCOVER-NAME = Discover
 
