@@ -127,8 +127,8 @@ class CameraServer(Node):
     def poll(self):
         """ Poll Send DON every 60 seconds or so  """
         now = time.time()
-        self._next_beat_t = now + 60
         if now > self._next_beat_t:
+            self._next_beat_t = now + 60
             self.set_driver('ST', now, report=True)
             self.report_isycmd('DON')
         return True

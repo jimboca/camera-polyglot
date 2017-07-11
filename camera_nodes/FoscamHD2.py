@@ -112,7 +112,7 @@ class FoscamHD2(Node):
         """ Nothing to poll?  """
         #response = os.system("ping -c 1 -w2 " + self.ip + " > /dev/null 2>&1")
         # Fix the motion params if it failed the last time.
-        if not self.set_motion_params_st:
+        if not self.set_motion_params_st and self.connected == 1:
             self._set_motion_params()
         return
 
