@@ -17,4 +17,5 @@ def myfloat(value, prec=4):
 
 from .FoscamMJPEG import FoscamMJPEG
 from .FoscamHD2 import FoscamHD2
+from .Amcrest1 import Amcrest1
 from .CameraServer import CameraServer

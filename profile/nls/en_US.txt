@@ -219,3 +219,45 @@ ST-CAMNM-ST-NAME = Motion
 #ST-CAMNM-NAME = Motion
 #CMD-CAMNM-ST-NAME = Motion
 #CMDP-CAMNM-ST-NAME = Motion
+
+# Camera Controls
+ST-CAM-GV1-NAME = Polyglot Node Version Major
+ST-CAM-GV2-NAME = IP Address
+ST-CAM-GV3-NAME = Port
+ST-CAM-GV4-NAME = Responding
+ST-CAM-GV5-NAME = Network LED Mode
+ST-CAM-GV6-NAME = Alarm Motion Armed
+ST-CAM-GV7-NAME = Alarm Send Mail
+ST-CAM-GV8-NAME = Motion Sensitivity
+ST-CAM-GV9-NAME = Motion Compensation
+ST-CAM-GV10-NAME = Authorization Mode
+ST-CAM-GV11-NAME = Camera System Version
+ST-CAM-GV12-NAME = Polyglot Node Version Minor
+ST-CAM-GV13-NAME = Upload Interval
+
+#
+# Amcrest
+#
+ND-Amcrest1-NAME = Amcrest Camera Type 1
+ND-Amcrest1-ICON = Input
+ND-Amcrest1-ICON = Input
+
+# Camera Controls
+ST-AMC1-GV1-NAME = Camera System Version
+ST-AMC1-GV2-NAME = IP Address
+ST-AMC1-GV3-NAME = Port
+ST-AMC1-GV4-NAME = Responding
+ST-AMC1-GV5-NAME = Video Motion Detect
+ST-AMC1-GV6-NAME = VMD Record
+ST-AMC1-GV7-NAME = VMD Send Email
+ST-AMC1-GV8-NAME = VMD Snapshot
+ST-AMC1-GV9-NAME = VMD Snapshot Count
+
+CMD-AMC1-ST-NAME = Query
+CMD-AMC1-REBOOT-NAME = Reboot
+CMD-AMC1-SET_VMD_ENABLE-NAME=Set Video Motion Detect
+CMD-AMC1-SET_VMD_RECORD-NAME=Set Video Motion Detect Record
+CMD-AMC1-SET_VMD_EMAIL-NAME=Set Video Motion Detect Email
+CMD-AMC1-SET_VMD_SNAPSHOT-NAME=Set Video Motion Detect Snapshot
+CMD-AMC1-SET_VMD_SNAPSHOT_COUNT-NAME=Set Video Motion Detect Snapshot Count
+CMD-AMC1-SET_POS-NAME=Set Position

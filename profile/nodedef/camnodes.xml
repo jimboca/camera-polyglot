@@ -164,6 +164,51 @@
     </cmds>
   </nodeDef>
 
+  <!-- === Amcrest Camera ============================================================  -->
+
+  <nodeDef id="Amcrest1" nodeType="139" nls="AMC1">
+    <sts>
+      <st id="GV1" editor="FLOAT" />     <!-- Camera System Version -->
+      <st id="GV4" editor="BOOL" />      <!-- Responding -->
+      <st id="GV5" editor="BOOL" />      <!-- Video Motion Detect Enable -->
+      <st id="GV6" editor="BOOL" />      <!--   - Record     -->
+      <st id="GV7" editor="BOOL" />      <!--   - Send Email -->
+      <st id="GV8" editor="BOOL" />      <!--   - Snapshot   -->
+      <st id="GV9" editor="I_135" />    <!--   - Snap Count -->
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+	<!--  Video Motion Detect Enable -->
+        <cmd id="SET_VMD_ENABLE">
+          <p id="" editor="BOOL" init="GV5" />
+        </cmd>
+	<!--  -->
+        <cmd id="SET_VMD_RECORD">
+          <p id="" editor="BOOL" init="GV6" />
+        </cmd>
+	<!--  -->
+        <cmd id="SET_VMD_EMAIL">
+          <p id="" editor="BOOL" init="GV7" />
+        </cmd>
+	<!--   -->
+        <cmd id="SET_VMD_SNAPSHOT">
+          <p id="" editor="BOOL" init="GV8" />
+        </cmd>
+	<!--  Send email for motion alarm -->
+        <cmd id="SET_VMD_SNAPSHOT_COUNT">
+          <p id="" editor="I_135" init="GV9" />
+        </cmd>
+	<!-- Set camera position to one of 16 presets -->
+        <cmd id="SET_POS">
+          <p id="" editor="I_POS16" />
+        </cmd>
+	<cmd id="REBOOT" />
+	<cmd id="QUERY" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+
   <!-- === Camera Motion Node ============================================================  -->
   <nodeDef id="CamMotion" nodeType="139" nls="CAMNM">
     <sts>

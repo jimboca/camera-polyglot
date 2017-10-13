@@ -9,6 +9,12 @@ def myfloat(value, prec=4):
     """ round and return float """
     return round(float(value), prec)
 
+# from http://commandline.org.uk/python/how-to-find-out-ip-address-in-python/
+def get_network_ip(rhost):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect((rhost, 0))
+    return s.getsockname()[0]
+
 def ip2long(ip):
     """ Convert an IP string to long """
     packedIP = socket.inet_aton(ip)
@@ -51,3 +57,33 @@ def clearBit(int_type, offset):
 def toggleBit(int_type, offset):
     mask = 1 << offset
     return(int_type ^ mask)
+
+def str2bool(value):
+    """
+    Args:
+        value - text to be converted to boolean
+         True values: y, yes, true, t, on, 1
+         False values: n, no, false, off, 0
+    """
+    try:
+        if isinstance(value, (str, unicode)):
+            return bool(util.strtobool(value))
+    except NameError:  # python 3
+        if isinstance(value, str):
+            return bool(util.strtobool(value))
+    return bool(value)
+
+def bool2int(value):
+    if value:
+        return 1
+    else:
+        return 0
+
+def int2str(value):
+    if int(value) == 0:
+        return "false"
+    else:
+        return "true"
+
+def str2int(value):
+    return bool2int(str2bool(value))

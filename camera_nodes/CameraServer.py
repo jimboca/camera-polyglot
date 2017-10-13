@@ -8,6 +8,7 @@
 # and automatically add them.
 #
 # TODO:
+#  - Find cam manifest and pass to Amcrest1, or add as manifest have add_config skip it?
 #  - Pass logger to foscam_poll
 #  - Use GV3 to pass timeout to foscam_poll
 #
@@ -49,9 +50,28 @@ class CameraServer(Node):
             if 'GV7' in drivers:
                 self.longpoll = drivers['GV7']
         super(CameraServer, self).__init__(parent, self.address, self.name, True, manifest)
+        self._add_config_cams(self.parent.cam_config,manifest)
         self._add_manifest_cams(manifest)
         self.query();
 
+    def _add_config_cams(self,config,manifest):
+        if not 'cameras' in config:
+            self.parent.logger.info("CameraServer:add_config_cams: No 'cameras' in config")
+            return
+        if config['cameras'] is None:
+            self.parent.logger.info("CameraServer:add_config_cams: Empty 'cameras' list config")
+            return
+        # Add cameras from our config
+        self.parent.logger.debug("CameraServer:add_config_cams: cameras=%s" % (config['cameras']))
+        for a_config in config['cameras']:
+            if a_config['type'] == "Amcrest1":
+                self.parent.logger.debug("CameraServer:add_config_cams: type=Amcrest1")
+                Amcrest1(self.parent, True,
+                         self.parent.cam_config['user'], self.parent.cam_config['password'],
+                         config=a_config) # manifest=data
+            else:
+                self.parent.logger.error("Unknown Camera type '%s'" % (a_config['type']))
+        
     def _add_manifest_cams(self,manifest):
         # Add cameras in our manifest
         self.parent.logger.debug("CameraServer:add_manifest_cams: manifest=%s" % (manifest))
