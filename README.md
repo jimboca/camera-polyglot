@@ -27,6 +27,25 @@ This node server is intended to support any type of camera.  Currently the follo
    FI9828P V2   | 1.4.1.10
    FI9826P V2   | 1.5.3.19
 
+3. Amcrest
+   This uses the https://github.com/tchellomello/python-amcrest python library to control the camera so any that work with that interace should work.
+   Currently there is no discovery for this cameras so you need to add them to the config
+
+# Config Format
+
+The default config.yaml is automatically created in the Install procedure step #2, and will contain a generic settings for uername and password.  Currently you must use the same username and password on all camers.  The format is as follows:
+
+```
+user: your_user_name
+password: your_password
+
+cameras:
+  - host: 192.168.86.120
+    type: Amcrest1
+```
+
+The cameras section is not needed for foscam cameras, to add more cameras just duplicate the host and type lines for each one.
+
 # Requirements
 
 1. Currently you must be running at least the unstable-rc version of polyglot.  You must grab the uncompiled version as instructed here:  https://github.com/UniversalDevicesInc/Polyglot/wiki/Polyglot-README#to-run-the-python-module-non-compiled-version Then also switch to the unstable-rc branch before running polyglot with `git checkout unstable-rc` when in the checked out Polyglot directory.  But, if you are using another node server you pulled down from github, it may not yet be compatible so check with the Author before switching to this version!
@@ -52,6 +71,7 @@ Install:
 3. If this is the first time, it will create a configuration file for you and will die with a message like `ERROR    [04-17-2016 20:06:07] polyglot.nodeserver_manager: camera: IOError: Created default config file, please edit and set the proper values "/home/pi/Polyglot/config/camera-polyglot/config.yaml"`
   * You can view the Polyglot log from the web page by clicking the 'View Log' icon.
   * Edit this config file on your Rpi and set the username and password for your camera(s).
+  * If you have Amcrest cameras, add your cameras with host and type.
 4. Go back to the Polyglot web page:
   * Click on the camera node server on the left of the page
   * Click on the 'Restart Server'
@@ -205,6 +225,8 @@ CameraServer Status: ${var.2.155}
 
 # Release Notes:
 
+- 0.10.0:
+   - Initial release of Amcrest
 - 0.9.0:
    - Discover will update IP address of existing cameras.
    - Add support back for sending DON every minute to use for monitor.  https://github.com/jimboca/camera-polyglot/blob/master/README.md#programs

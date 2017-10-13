@@ -176,10 +176,13 @@ class FoscamMJPEG(Node):
         show, which is the last 2 digits
         """
         vnums = sys_ver.split(".")
-        self.parent.logger.debug("FoscamMJPEG:parse_sys_ver: %s 0=%s 1=%s 2=%s 3=%s",sys_ver,vnums[0],vnums[1],vnums[2],vnums[3])
-        ver = myfloat("%d.%d" % (int(vnums[2]),int(vnums[3])),2)
-        self.parent.logger.debug("FoscamMJPEG:parse_sys_ver: ver=%f",ver)
-        return ver
+        if len(vnums) == 4:
+            self.parent.logger.debug("FoscamMJPEG:parse_sys_ver: %s 0=%s 1=%s 2=%s 3=%s",sys_ver,vnums[0],vnums[1],vnums[2],vnums[3])
+            ver = myfloat("%d.%d" % (int(vnums[2]),int(vnums[3])),2)
+            self.parent.logger.debug("FoscamMJPEG:parse_sys_ver: ver=%f",ver)
+            return ver
+        else:
+            return None
         
     def _get_auth_mode(self,sys_ver):
         """ 
@@ -245,10 +248,13 @@ class FoscamMJPEG(Node):
             self.status = status
             # Update sys_ver if it's different
             if self.full_sys_ver != str(self.status['sys_ver']):
+                self.parent.logger.debug(self.status)
                 self.parent.logger.info("FoscamMJPEG:get_status:%s: New sys_ver %s != %s" % (self.name,self.full_sys_ver,str(self.status['sys_ver'])))
                 self.full_sys_ver = str(self.status['sys_ver'])
-                self.sys_ver = self._parse_sys_ver(self.status['sys_ver'])
-                self.set_driver('GV11', self.sys_ver, uom=56, report=True)
+                new_ver = self._parse_sys_ver(self.status['sys_ver'])
+                if new_ver is not None:
+                    self.sys_ver = new_ver
+                    self.set_driver('GV11', self.sys_ver, uom=56, report=True)
         else:
             self.parent.send_error("FoscamMJPEG:_get_params:%s: Failed to get_status" % (self.name))
             # inform the motion node there is an issue if we have a motion node
